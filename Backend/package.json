@@ -1,0 +1,24 @@
+{
+  "name": "Valiant",
+  "version": "1.0.0",
+  "description": "A Full stack e-commerce website",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Harshyadav0987/Valiant-E-Commerce.git"
+  },
+  "author": "Harsh Yadav",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Harshyadav0987/Valiant-E-Commerce/issues"
+  },
+  "homepage": "https://github.com/Harshyadav0987/Valiant-E-Commerce#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.18.1"
+  }
+}
