@@ -8,13 +8,28 @@ const productSchema = new Schema ({
     },
 
     description : String,
+
     image :[
         {type : String,}
     ],
-    price:Number,
-    stock : Number,
+
+    price: {
+        type: Number,
+        required: true,
+        min: 0,
+    },
+
+    stock: {
+        type: Number,
+        required: true,
+        min: 0,
+    },
+
     category : String,
     //Here i will add vendor  later
+
+    //vendor: { type: Schema.Types.ObjectId, ref: "User" }
+
 
 });
 

@@ -5,7 +5,7 @@ function App() {
 
   return (
     <>
-      <div className='bg-black w-full'>
+      <div className='bg-slate-600 w-screen h-screen' >
         <h1 className=''>Welcome to Valiant</h1>
       </div>
     </>
