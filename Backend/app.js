@@ -17,6 +17,14 @@ async function main() {
     await mongoose.connect(MONOG_URL);
 }
 
+// ✅ Allow only your frontend
+app.use(cors({
+  origin: "http://localhost:5173", // React frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true, // if using cookies/auth
+}));
+
+
 app.get("/",(req,res)=>{
     res.send("Hello testing")
 });
