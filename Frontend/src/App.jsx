@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import './App.css'
+import Header from './components/Header'
 
 function App() {
 
   return (
     <>
-      <div className='bg-slate-600 w-screen h-screen' >
-        <h1 className=''>Welcome to Valiant</h1>
-      </div>
+      <Header/>
+      {/* <Footer/> */}
     </>
   )
 }

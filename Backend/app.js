@@ -2,6 +2,7 @@ const express = require( "express")
 const app = express();
 const mongoose = require("mongoose");
 const Product = require("./models/product.js")
+const cors = require("cors");
 
 const MONOG_URL='mongodb://127.0.0.1:27017/Valiant';
 
@@ -37,7 +38,11 @@ app.get("/home",async (req,res)=>{
         .catch(err=>{
             res.send(err);
         })
-})
+});
+
+app.get("/cart",(req,res)=>{
+    res.send("Hello this is cart");
+});
 
 const port = process.env.port || 3000
 
