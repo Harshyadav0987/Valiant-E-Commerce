@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "/logo2.png"
+import logo from "/logocropped.jpg"
 
 function Logo({className="h-28 w-28"}){
     return(

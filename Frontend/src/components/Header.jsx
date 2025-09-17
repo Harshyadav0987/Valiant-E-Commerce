@@ -7,11 +7,14 @@ import {NavLink} from 'react-router-dom'
 
 function Header(){
     return (
-        <div className="flex items-center justify-between py-5 font-medium">
-            <Logo className="h-28 w-28"/>
+        <div className="flex items-center justify-between font-medium py-4 mx-2">
+            <div className="h-11 flex items-center">
+                <Logo className="h-11 w-auto" />
+            </div>
+
 
             {/* Centered Search Section */}
-            <div className="flex-1 flex justify-center mr-28">
+            <div className="flex-1 flex justify-center">
                 <div className="flex items-center gap-2">
                     <input type="search" className="bg-gray-100 p-2 rounded focus:border focus:border-gray-800 focus:outline-none" placeholder="Search..." />
                     <button className="bg-gray-800 text-white px-4 py-2 rounded">Search</button>
@@ -23,15 +26,15 @@ function Header(){
 
             <ul  to="/"className="hidden sm:flex gap-5 text-sm text-gray-800">
                 <NavLink className="flex flex-col items-center gap-1">
-                    <p className="text-base mt-2 ">About</p>
+                    <p className="text-base my-2 ">About</p>
                 </NavLink>
 
-                <NavLink className="flex flex-col items-center gap-1">
+                {/* <NavLink className="flex flex-col items-center gap-1">
                     <p className="text-base mt-2">Become a Vendor</p>
-                </NavLink>
+                </NavLink> */}
 
                 <NavLink className="flex flex-col items-center gap-1">
-                    <p className="text-base mt-2">Orders</p>
+                    <p className="text-base my-2">Orders</p>
                 </NavLink>
 
                 <NavLink to="/cart" className="flex flex-col items-center gap-1">
