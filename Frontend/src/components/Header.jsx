@@ -8,8 +8,8 @@ import {NavLink} from 'react-router-dom'
 function Header(){
     return (
         <div className="flex items-center justify-between font-medium py-4 mx-2">
-            <div className="h-11 flex items-center">
-                <Logo className="h-11 w-auto" />
+            <div className="h-10 flex items-center">
+                <NavLink to="Home">  <Logo className="h-10 w-auto" /></NavLink>
             </div>
 
 

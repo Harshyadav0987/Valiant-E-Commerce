@@ -40,6 +40,11 @@ app.get("/home",async (req,res)=>{
         })
 });
 
+app.get("/api/products",async(req,res){
+    const products = await Product.find({});
+    res.json(products);
+});
+
 app.get("/cart",(req,res)=>{
     res.send("Hello this is cart");
 });
