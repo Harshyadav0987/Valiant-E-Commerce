@@ -20,7 +20,7 @@ function Hero() {
         {/* Right side ends here */}
 
         {/* Hero left side */}
-        <div className='w-1/2'>
+        <div className='sm:w-1/2'>
             <img className="w-full h-full" src={hero} alt="" />
         </div>
         {/* left side ends here */}
