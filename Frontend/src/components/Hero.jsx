@@ -1,4 +1,3 @@
-import React from 'react'
 import hero from '/Hero.png'
 
 function Hero() {
@@ -9,7 +8,7 @@ function Hero() {
             <div className='text-gray-800 '>
                 <div className='flex items-center gap-2 '>
                     <p className='w-8 md:w-11 h-[2px] bg-gray-800'></p>
-                    <p className=' font-medium text-sm md:text-base'> OUR BEST SELLERS</p>
+                    <p className=' font-semibold text-sm md:text-base'> OUR BEST SELLERS</p>
                 </div>
                 <h1 className='prata-regular text-3xl sm:py-3 lg:text-5xl leading-relaxed'>Latest Arrivals</h1>
                 <div className='flex items-center gap-2'>
