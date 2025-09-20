@@ -17,13 +17,13 @@ function Hero() {
                 </div>
             </div>
         </div>
-        {/* Right side ends here */}
+        {/* left side ends here */}
 
-        {/* Hero left side */}
+        {/* Hero right side */}
         <div className='sm:w-1/2'>
             <img className="w-full h-full" src={hero} alt="" />
         </div>
-        {/* left side ends here */}
+        {/* right side ends here */}
     </div>
   )
 }
