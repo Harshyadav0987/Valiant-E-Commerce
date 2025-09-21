@@ -7,18 +7,43 @@ import BestSeller from './components/BestSeller'
 import OurPolicy from './components/OurPolicy'
 import NewsLetter from './components/NewsLetterBox'
 import Footer from './components/Footer'
+import SearchBar from './components/SearchBar'
+import { Routes ,Route} from 'react-router-dom'
+import Collection from './pages/Collection'
 
 function App() {
 
   return (
     <>
+      
      <div className='w-full min-h-screen'>
         <Header/>
-        <Hero/>
-        <LatestCollection/>
-        <BestSeller/>
-        <OurPolicy/>
-        <NewsLetter/>
+        <SearchBar/>
+
+        <Routes>
+          {/* Home Page */}
+          <Route
+            path="/"
+            element={
+              <>
+                <Hero />
+                <LatestCollection />
+                <BestSeller />
+                <OurPolicy />
+                <NewsLetter />
+              </>
+            }
+          />
+
+          <Route
+            path="/collection"
+            element={
+              <>
+                <Collection/>
+              </>
+            }
+          />
+        </Routes>
      </div>
         <Footer/>
     </>

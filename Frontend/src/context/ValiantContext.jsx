@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 import {products} from '../assets/assets.js'
 export const ValiantContext = createContext();
 
@@ -6,8 +6,11 @@ const ValiantContextProvider = (props)=>{
     
     const currency = "₹"
     const deliveryFee = 99;
+    const [Search,setSearch] =useState('');
+    const [ShowSearch,setShowSearch] = useState(false);
+
     const val ={
-        products,currency,deliveryFee
+        products,currency,deliveryFee,Search,setSearch,ShowSearch,setShowSearch
     }
 
     return (

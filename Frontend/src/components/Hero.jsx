@@ -1,4 +1,5 @@
 import hero from '/Hero.png'
+import { assets } from '../assets/assets'
 
 function Hero() {
   return (

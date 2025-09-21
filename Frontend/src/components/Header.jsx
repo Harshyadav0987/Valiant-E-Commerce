@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import Logo from "./Logo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faBars, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import {NavLink,Link} from 'react-router-dom'
 import { useState } from "react";
+import { ValiantContext } from "../context/ValiantContext";
 
 function Header(){
     // Responsive Header with hamburger menu for small/medium screens
     const [menuOpen, setMenuOpen] = useState(false);
-    const [Search,setSearch] = useState(false);
+    const {Search,setSearch,ShowSearch,setShowSearch} = useContext(ValiantContext)
+    
 
     return (
         <header className="w-full bg-white shadow-sm">
@@ -19,50 +21,26 @@ function Header(){
                         <Logo className="h-10 w-auto" />
                     </Link>
                 </div>
-
-                {/* Centered Search Section for medium and up */}
-                <div className="flex-1 justify-center mx-2 sm:flex hidden ">
-                    <div className="flex items-center gap-2 w-full max-w-md">
-                        <input
-                            type="search"
-                            className="bg-gray-100 p-2 rounded focus:border focus:border-gray-800 focus:outline-none w-full"
-                            placeholder="Search..."
-                        />
-                        <button className="bg-gray-800 text-white px-4 py-2 rounded">
-                            Search
-                        </button>
-                    </div>
-                </div>
-
-                { (
-                    <div className="flex-1 justify-center mx-2 flex mb-1 sm:hidden">
-                        <div className="flex items-center gap-2 w-70 max-w-md">
-                            <input
-                                type="search"
-                                className="bg-gray-100 p-2 rounded focus:border focus:border-gray-800 focus:outline-none w-full h-8"
-                                placeholder="Search..."
-                            />
-                            <button className="bg-gray-800 text-white px-4 py-1 rounded h-8">
-                                Search
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {/* Search icon for small screens */}
-                {/* <div className="flex items-center sm:hidden mr-2">
-                    <button
-                        onClick={() => setSearch(!Search)}
-                        aria-label="Open search"
-                        className="focus:outline-none"
-                    >
-                        <FontAwesomeIcon icon={faMagnifyingGlass} className="h-6 w-6 ml-96" />
-                    </button>
-                </div> */}
-
-
+                
+                <nav className="hidden sm:flex gap-4 items-center text-sm text-gray-800">
+                    <NavLink className="flex flex-col items-center gap-1" to="/">
+                        <p className="text-base my-2 hover:text-gray-500">HOME</p>
+                    </NavLink>
+                    <NavLink className="flex flex-col items-center gap-1" to="/collection">
+                        <p className="text-base my-2 hover:text-gray-500">COLLECTIONS</p>
+                    </NavLink>
+                    <NavLink className="flex flex-col items-center gap-1" to="/about">
+                        <p className="text-base my-2 hover:text-gray-500">ABOUT</p>
+                    </NavLink>
+                    <NavLink className="flex flex-col items-center gap-1" to="/contact">
+                        <p className="text-base my-2 hover:text-gray-500">CONTACT</p>
+                    </NavLink>
+                </nav>
 
                 <div className="flex items-center sm:hidden">
+                    <NavLink className="flex flex-col items-center gap-1 mr-3 mb-1" to="" onClick={()=>setShowSearch(!ShowSearch)}>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className="text-base my-2 hover:text-gray-500 text-gray-800 size-5 " />
+                    </NavLink>
                     <button
                         onClick={() => setMenuOpen(!menuOpen)}
                         aria-label="Open menu"
@@ -74,12 +52,14 @@ function Header(){
 
                 {/* Navigation links for medium and larger screens */}
                 <nav className="hidden sm:flex gap-4 items-center text-sm text-gray-800">
-                    <NavLink className="flex flex-col items-center gap-1" to="/about">
-                        <p className="text-base my-2 hover:text-gray-500">About</p>
+                     {/* <NavLink className="flex flex-col items-center gap-1 " to="" onClick={()=>setShowSearch(!ShowSearch)}>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className="text-base my-2 hover:text-gray-500 text-gray-800 size-5 " />
+                    </NavLink> */}
+
+                     <NavLink className="flex flex-col items-center gap-1" to="" onClick={()=>setShowSearch(!ShowSearch)}>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className="text-base my-2 hover:text-gray-500 text-gray-800 size-5 " />
                     </NavLink>
-                    <NavLink className="flex flex-col items-center gap-1" to="/orders">
-                        <p className="text-base my-2 hover:text-gray-500">Orders</p>
-                    </NavLink>
+
                     <NavLink to="/cart" className="flex flex-col items-center gap-1 hover:text-gray-500">
                         <FontAwesomeIcon icon={faShoppingCart} className="h-7 w-7" />
                     </NavLink>
@@ -96,6 +76,7 @@ function Header(){
                         <p className="text-base">SignUp</p>
                     </NavLink>
                 </nav>
+                
             </div>
 
             {/* Mobile menu */}
@@ -106,14 +87,14 @@ function Header(){
                         className="block py-2 text-gray-800 hover:text-gray-500"
                         onClick={() => setMenuOpen(false)}
                     >
-                        About
+                        Home
                     </NavLink>
                     <NavLink
                         to="/orders"
                         className="block py-2 text-gray-800 hover:text-gray-500"
                         onClick={() => setMenuOpen(false)}
                     >
-                        Orders
+                        Collection
                     </NavLink>
                     <NavLink
                         to="/cart"
