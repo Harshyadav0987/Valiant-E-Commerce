@@ -4,7 +4,7 @@ export const ValiantContext = createContext();
 
 const ValiantContextProvider = (props)=>{
     
-    const currency = "₹"
+    const currency = "$"
     const deliveryFee = 99;
     const [Search,setSearch] =useState('');
     const [ShowSearch,setShowSearch] = useState(false);

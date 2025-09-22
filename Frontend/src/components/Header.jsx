@@ -56,9 +56,17 @@ function Header(){
                         <FontAwesomeIcon icon={faMagnifyingGlass} className="text-base my-2 hover:text-gray-500 text-gray-800 size-5 " />
                     </NavLink> */}
 
-                     <NavLink className="flex flex-col items-center gap-1" to="" onClick={()=>setShowSearch(!ShowSearch)}>
-                        <FontAwesomeIcon icon={faMagnifyingGlass} className="text-base my-2 hover:text-gray-500 text-gray-800 size-5 " />
-                    </NavLink>
+                    <button
+                        type="button"
+                        onClick={() => setShowSearch(!ShowSearch)}
+                        className="flex flex-col items-center gap-1"
+                        >
+                        <FontAwesomeIcon
+                            icon={faMagnifyingGlass}
+                            className="text-base my-2 hover:text-gray-500 text-gray-800 size-5"
+                        />
+                    </button>
+
 
                     <NavLink to="/cart" className="flex flex-col items-center gap-1 hover:text-gray-500">
                         <FontAwesomeIcon icon={faShoppingCart} className="h-7 w-7" />
