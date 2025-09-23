@@ -6,11 +6,11 @@ const ValiantContextProvider = (props)=>{
     
     const currency = "$"
     const deliveryFee = 99;
-    const [Search,setSearch] =useState('');
+    const [search,setSearch] =useState('');
     const [ShowSearch,setShowSearch] = useState(false);
 
     const val ={
-        products,currency,deliveryFee,Search,setSearch,ShowSearch,setShowSearch
+        products,currency,deliveryFee,search,setSearch,ShowSearch,setShowSearch
     }
 
     return (

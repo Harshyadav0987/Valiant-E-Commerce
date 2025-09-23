@@ -1,8 +1,25 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ValiantContext } from '../context/ValiantContext'
 
 function SearchBar() {
-  const { Search, setSearch, ShowSearch, setShowSearch } = useContext(ValiantContext);
+  const { setSearch, ShowSearch, setShowSearch } = useContext(ValiantContext);
+  const [query, setQuery] = useState('');
+
+  useEffect(() => {
+    if (ShowSearch) {
+      setQuery('');
+      setSearch('');
+    }
+  }, [ShowSearch]);
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      setSearch(query);      // same as Search button
+    }
+    if (e.key === "Escape") {
+      setShowSearch(false);  // same as Close button
+    }
+  };
 
   return ShowSearch ? (
     <div className="absolute top-[64px] left-0 w-full z-50 bg-white shadow-md flex items-center justify-center py-3">
@@ -12,10 +29,14 @@ function SearchBar() {
           type="text"
           className="bg-gray-100 p-2 rounded focus:border focus:border-gray-800 focus:outline-none w-full"
           placeholder="Search..."
-          value={Search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}   // ✅ added here
         />
-        <button className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-100 hover:text-gray-800">
+        <button 
+          className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-100 hover:text-gray-800"
+          onClick={() => setSearch(query)}
+        >
           Search
         </button>
         <button
@@ -32,8 +53,14 @@ function SearchBar() {
           type="search"
           className="bg-gray-100 p-2 rounded focus:border focus:border-gray-800 focus:outline-none w-full h-8"
           placeholder="Search..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}   // ✅ added here too
         />
-        <button className="bg-gray-800 text-white px-4 py-1 rounded h-8">
+        <button
+          className="bg-gray-800 text-white px-4 py-1 rounded h-8"
+          onClick={() => setSearch(query)}
+        >
           Search
         </button>
       </div>
@@ -41,4 +68,4 @@ function SearchBar() {
   ) : null;
 }
 
-export default SearchBar
+export default SearchBar;

@@ -37,8 +37,10 @@ function Header(){
                     </NavLink>
                 </nav>
 
+
                 <div className="flex items-center sm:hidden">
-                    <NavLink className="flex flex-col items-center gap-1 mr-3 mb-1" to="" onClick={()=>setShowSearch(!ShowSearch)}>
+                    {/* Search bar */}
+                    <NavLink className="flex flex-col items-center gap-1 mr-3 mb-1" onClick={()=>setShowSearch(!ShowSearch)}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} className="text-base my-2 hover:text-gray-500 text-gray-800 size-5 " />
                     </NavLink>
                     <button
@@ -91,14 +93,14 @@ function Header(){
             {menuOpen && (
                 <div className="sm:hidden bg-white shadow-md px-4 py-3 space-y-2">
                     <NavLink
-                        to="/about"
+                        to="/"
                         className="block py-2 text-gray-800 hover:text-gray-500"
                         onClick={() => setMenuOpen(false)}
                     >
                         Home
                     </NavLink>
                     <NavLink
-                        to="/orders"
+                        to="/collection"
                         className="block py-2 text-gray-800 hover:text-gray-500"
                         onClick={() => setMenuOpen(false)}
                     >
