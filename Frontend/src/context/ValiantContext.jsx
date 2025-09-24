@@ -36,13 +36,25 @@ const ValiantContextProvider = (props)=>{
         setCartItems(cartData)
     }
 
+    const getCartCount= ()=>{
+        let totalCount = 0;
+
+        for(const items in cartItems){
+            for(const item in cartItems[items]){
+                totalCount+=cartItems[items][item];
+            }
+        }
+
+        return totalCount;
+    }
+
     useEffect(()=>{
         console.log(cartItems);
     },[cartItems])
 
 
     const val ={
-        products,currency,deliveryFee,search,setSearch,ShowSearch,setShowSearch,cartItems,addToCart
+        products,currency,deliveryFee,search,setSearch,ShowSearch,setShowSearch,cartItems,addToCart,getCartCount
     }
 
     return (

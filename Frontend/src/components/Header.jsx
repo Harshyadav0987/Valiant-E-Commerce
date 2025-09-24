@@ -9,7 +9,7 @@ import { ValiantContext } from "../context/ValiantContext";
 function Header(){
     // Responsive Header with hamburger menu for small/medium screens
     const [menuOpen, setMenuOpen] = useState(false);
-    const {Search,setSearch,ShowSearch,setShowSearch} = useContext(ValiantContext)
+    const {Search,setSearch,ShowSearch,setShowSearch,getCartCount} = useContext(ValiantContext)
     
 
     return (
@@ -70,9 +70,16 @@ function Header(){
                     </button>
 
 
-                    <NavLink to="/cart" className="flex flex-col items-center gap-1 hover:text-gray-500">
+                    <NavLink to="/cart" className="relative flex items-center justify-center hover:text-gray-700">
                         <FontAwesomeIcon icon={faShoppingCart} className="h-7 w-7" />
+
+                        {/* Minimal classy badge */}
+                        <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-gray-800 text-white text-[0.65rem] font-semibold rounded-full h-4 w-4 flex items-center justify-center shadow-md">
+                            {getCartCount()}
+                        </span>
                     </NavLink>
+
+
                     <NavLink
                         to="/login"
                         className="flex flex-col items-center gap-1 rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-gray-100 shadow-sm hover:bg-gray-100 hover:text-gray-800"
