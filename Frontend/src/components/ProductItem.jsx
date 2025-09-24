@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 function ProductItem({id,image,name,price}) {
     const {currency} = useContext(ValiantContext);
   return (
-    <Link className='text-gray-800 cursor-pointer' to={`/product/${id}`}>
+    <Link className='text-gray-800 cursor-pointer' to={`/product/${id}`} onClick={()=>window.scrollTo({top:0,behavior:'smooth'})}>
           <div className="overflow-hidden">
             <img className='hover:scale-110 transition ease-in-out' src={image[0]} alt="" />
             <p className='pt-3 pb-1 text-sm'>{name}</p>

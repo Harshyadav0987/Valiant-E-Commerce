@@ -10,6 +10,9 @@ import Footer from './components/Footer'
 import SearchBar from './components/SearchBar'
 import { Routes ,Route} from 'react-router-dom'
 import Collection from './pages/Collection'
+import Product from './pages/Product'
+import { ToastContainer, toast } from 'react-toastify';
+
 
 function App() {
 
@@ -17,6 +20,7 @@ function App() {
     <>
       
      <div className='w-full min-h-screen'>
+        <ToastContainer/>
         <Header/>
         <SearchBar/>
 
@@ -40,6 +44,15 @@ function App() {
             element={
               <>
                 <Collection/>
+              </>
+            }
+          />
+
+          <Route
+            path={`/product/:productId`}
+            element={
+              <>
+                <Product/>
               </>
             }
           />
