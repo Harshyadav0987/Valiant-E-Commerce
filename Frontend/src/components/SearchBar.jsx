@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { ValiantContext } from '../context/ValiantContext'
 
 function SearchBar() {
-  const { setSearch, ShowSearch, setShowSearch } = useContext(ValiantContext);
+  const { setSearch, ShowSearch, setShowSearch ,navigate} = useContext(ValiantContext);
   const [query, setQuery] = useState('');
 
   useEffect(() => {
@@ -35,7 +35,8 @@ function SearchBar() {
         />
         <button 
           className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-100 hover:text-gray-800"
-          onClick={() => setSearch(query)}
+          onClick={() => {setSearch(query), navigate('/collection')}}
+          
         >
           Search
         </button>
