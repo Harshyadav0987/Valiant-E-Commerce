@@ -12,17 +12,21 @@ import { Routes ,Route} from 'react-router-dom'
 import Collection from './pages/Collection'
 import Product from './pages/Product'
 import { ToastContainer, toast } from 'react-toastify';
+import Cart from './pages/Cart'
+import PlaceOrderPage from './pages/PlaceOrder'
 
 
 function App() {
 
   return (
     <>
+    
       
      <div className='w-full min-h-screen'>
         <ToastContainer/>
         <Header/>
         <SearchBar/>
+        
 
         <Routes>
           {/* Home Page */}
@@ -53,6 +57,22 @@ function App() {
             element={
               <>
                 <Product/>
+              </>
+            }
+          />
+          <Route
+            path={`/cart`}
+            element={
+              <>
+                <Cart/>
+              </>
+            }
+          />
+          <Route
+            path={`/place-order`}
+            element={
+              <>
+                <PlaceOrderPage/>
               </>
             }
           />
