@@ -13,7 +13,9 @@ import Collection from './pages/Collection'
 import Product from './pages/Product'
 import { ToastContainer, toast } from 'react-toastify';
 import Cart from './pages/Cart'
-
+import PlaceOrder from './pages/PlaceOrder'
+import Orders from './pages/Orders'
+import Signup from './pages/Signup'
 
 function App() {
 
@@ -67,14 +69,30 @@ function App() {
               </>
             }
           />
-          {/* <Route
+          <Route
             path={`/place-order`}
             element={
               <>
-                <PlaceOrderPage/>
+                <PlaceOrder/>
               </>
             }
-          /> */}
+          />
+          <Route
+            path={`/orders`}
+            element={
+              <>
+                <Orders/>
+              </>
+            }
+          />
+          <Route
+            path={`/signup`}
+            element={
+              <>
+                <Signup/>
+              </>
+            }
+          />
         </Routes>
      </div>
         <Footer/>
