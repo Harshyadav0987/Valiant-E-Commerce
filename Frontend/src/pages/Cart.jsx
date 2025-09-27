@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { ValiantContext } from '../context/ValiantContext'
-import { assets } from '../assets/assets'
 import Title from '../components/Title'
-import { faMinus,faP,faPlus,faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faMinus,faP,faPlus,faXmark ,faShoppingBag} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import CartTotal from '../components/CartTotal'
 
 function Cart() {
-    const { products, currency, cartItems, updateQuantity,getCartAmount,navigate } = useContext(ValiantContext)
+    const { products, currency, cartItems, updateQuantity,navigate } = useContext(ValiantContext)
     const [cartData, setCartData] = useState([])
 
     useEffect(() => {
@@ -28,18 +27,6 @@ function Cart() {
         }
     }, [cartItems, products])
 
-    // Calculate total price
-    // const getCartAmount = () => {
-    //     let totalAmount = 0
-    //     for (const item of cartData) {
-    //         const itemInfo = products.find((product) => product._id === item._id)
-    //         if (itemInfo) {
-    //             totalAmount += itemInfo.price * item.quantity
-    //         }
-    //     }
-    //     return totalAmount
-    // }
-
     return (
         <div className='border-t pt-14'>
             <div className='text-2xl mb-3'>
@@ -50,11 +37,9 @@ function Cart() {
                 {/* Cart Items Section */}
                 <div className='lg:col-span-2'>
                     {cartData.length === 0 ? (
-                        <div className='text-center py-16'>
+                        <div className='text-center py-16 ml-96 pl-16'>
                             <div className='text-gray-400 mb-4'>
-                                <svg className='w-20 h-20 mx-auto mb-4' fill='currentColor' viewBox='0 0 20 20'>
-                                    <path fillRule='evenodd' d='M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zM8 6V5a2 2 0 114 0v1H8zm2 6a1 1 0 100-2 1 1 0 000 2z' clipRule='evenodd' />
-                                </svg>
+                                <FontAwesomeIcon className='size-20' icon={faShoppingBag}/>
                             </div>
                             <h3 className='text-xl font-medium text-gray-900 mb-2'>Your cart is empty</h3>
                             <p className='text-gray-500 mb-6'>Add some products to get started</p>
@@ -129,7 +114,8 @@ function Cart() {
                                                             updateQuantity(item._id, item.size, numValue);
                                                             }
                                                         }} 
-                                                        />                                                        <button 
+                                                        />                                                        
+                                                        <button 
                                                             onClick={() => updateQuantity(item._id, item.size, item.quantity + 1)}
                                                             className='p-2 hover:bg-gray-100 text-gray-600'
                                                         >
@@ -158,7 +144,7 @@ function Cart() {
                 {/* Order Summary Section */}
                 {cartData.length > 0 && (
                     <div>
-                    <CartTotal/>
+                        <CartTotal/>
                         <div>
                                 {/* Promo Code */}
                             <div className='mb-6'>
