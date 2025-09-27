@@ -16,6 +16,8 @@ import Cart from './pages/Cart'
 import PlaceOrder from './pages/PlaceOrder'
 import Orders from './pages/Orders'
 import Signup from './pages/Signup'
+import About from './pages/About'
+import Contact from './pages/Contact'
 
 function App() {
 
@@ -90,6 +92,22 @@ function App() {
             element={
               <>
                 <Signup/>
+              </>
+            }
+          />
+          <Route
+            path={`/about`}
+            element={
+              <>
+                <About/>
+              </>
+            }
+          />
+          <Route
+            path={`/contact`}
+            element={
+              <>
+                <Contact/>
               </>
             }
           />

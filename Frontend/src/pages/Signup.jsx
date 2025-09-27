@@ -3,17 +3,18 @@ import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
+    fullName: '',
     email: '',
     password: '',
     confirmPassword: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData(prev => ({ 
       ...prev,
       [name]: value
     }));
@@ -32,7 +33,7 @@ const Signup = () => {
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
-          <h2 className="mt-6 text-3xl font-bold text-gray-900">
+          <h2 className="mt-6 text-3xl font-bold text-gray-800">
             {isLogin ? 'Welcome Back' : 'Create Account'}
           </h2>
           <p className="mt-2 text-sm text-gray-600">
@@ -46,6 +47,31 @@ const Signup = () => {
         {/* Form */}
         <div className="mt-8 space-y-6">
           <div className="space-y-4">
+            {/* Name Field (only for signup) */}
+            {!isLogin && (
+              <div>
+                <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
+                  Full Name
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <User className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="fullName"
+                    name="fullName"
+                    type="text"
+                    autoComplete="name"
+                    required
+                    className="appearance-none relative block w-full pl-10 pr-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-black focus:z-10 sm:text-sm"
+                    placeholder="Enter your full name"
+                    value={formData.fullName}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+            )}
+
             {/* Email Field */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
@@ -145,10 +171,10 @@ const Signup = () => {
             <button
               type="button"
               onClick={handleSubmit}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gray-900 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors"
             >
               <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <User className="h-5 w-5 text-gray-300 group-hover:text-gray-200" />
+                <Lock className="h-5 w-5 text-gray-300 group-hover:text-gray-800 " />
               </span>
               {isLogin ? 'Sign In' : 'Create Account'}
             </button>

@@ -35,6 +35,9 @@ function Header(){
                     <NavLink className="flex flex-col items-center gap-1" to="/contact">
                         <p className="text-base my-2 hover:text-gray-500">CONTACT</p>
                     </NavLink>
+                    <NavLink className="flex flex-col items-center gap-1" to="/orders">
+                        <p className="text-base my-2 hover:text-gray-500">ORDERS</p>
+                    </NavLink>
                 </nav>
 
 
@@ -79,18 +82,11 @@ function Header(){
                         </span>
                     </NavLink>
 
-
-                    <NavLink
-                        to="/login"
-                        className="flex flex-col items-center gap-1 rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-gray-100 shadow-sm hover:bg-gray-100 hover:text-gray-800"
-                    >
-                        <p className="text-base">Login</p>
-                    </NavLink>
                     <NavLink
                         to="/signup"
                         className="flex flex-col items-center gap-1 rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-gray-100 shadow-sm hover:bg-gray-100 hover:text-gray-800"
                     >
-                        <p className="text-base">SignUp</p>
+                        <p className="text-base">Login/SignUp</p>
                     </NavLink>
                 </nav>
                 
