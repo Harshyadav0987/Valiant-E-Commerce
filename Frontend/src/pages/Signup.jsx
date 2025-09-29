@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 
 const Signup = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     password: '',
     confirmPassword: ''
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLogin, setIsLogin] = useState(true);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
