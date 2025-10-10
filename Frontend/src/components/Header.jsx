@@ -18,7 +18,7 @@ function Header(){
                 {/* Logo */}
                 <div className="h-10 flex items-center">
                     <Link to="/">
-                        <Logo className="h-10 w-auto" />
+                        <Logo className="h-12 w-auto" />
                     </Link>
                 </div>
                 

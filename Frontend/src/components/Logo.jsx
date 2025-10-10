@@ -1,7 +1,7 @@
 import React from "react";
-import logo from "/matched_logo.png"
+import logo from "/valiant_new_logo_final_cropped.png";
 
-function Logo({className="h-28 w-28"}){
+function Logo({className="h-100"}){
     return(
         <img 
             src={logo} 
