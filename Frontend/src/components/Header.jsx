@@ -9,7 +9,7 @@ import { ValiantContext } from "../context/ValiantContext";
 function Header(){
     // Responsive Header with hamburger menu for small/medium screens
     const [menuOpen, setMenuOpen] = useState(false);
-    const {Search,setSearch,ShowSearch,setShowSearch,getCartCount} = useContext(ValiantContext)
+    const {Search,setSearch,ShowSearch,setShowSearch,getCartCount,token,setToken} = useContext(ValiantContext)
     
 
     return (
@@ -23,7 +23,7 @@ function Header(){
                 </div>
                 
                 <nav className="hidden sm:flex gap-4 items-center text-sm text-gray-800">
-                    <NavLink className="flex flex-col items-center gap-1" to="/">
+                    <NavLink className="flex flex-col items-center gap-1 " to="/">
                         <p className="text-base my-2 hover:text-gray-500">HOME</p>
                     </NavLink>
                     <NavLink className="flex flex-col items-center gap-1" to="/collection">
@@ -64,16 +64,16 @@ function Header(){
                     <button
                         type="button"
                         onClick={() => setShowSearch(!ShowSearch)}
-                        className="flex flex-col items-center gap-1"
+                        className="flex flex-col items-center gap-1 "
                         >
                         <FontAwesomeIcon
                             icon={faMagnifyingGlass}
-                            className="text-base my-2 hover:text-gray-500 text-gray-800 size-5"
+                            className="text-base my-2  transition-all duration-300 transform hover:-translate-y-0.5 text-gray-800 size-5"
                         />
                     </button>
 
 
-                    <NavLink to="/cart" className="relative flex items-center justify-center hover:text-gray-700">
+                    <NavLink to="/cart" className="relative flex items-center justify-center  transition-all duration-300 transform hover:-translate-y-0.5">
                         <FontAwesomeIcon icon={faShoppingCart} className="h-7 w-7" />
 
                         {/* Minimal classy badge */}
@@ -82,12 +82,30 @@ function Header(){
                         </span>
                     </NavLink>
 
+
+                    {!token?
                     <NavLink
                         to="/signup"
-                        className="flex flex-col items-center gap-1 rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-gray-100 shadow-sm hover:bg-gray-100 hover:text-gray-800"
+                        className="flex flex-col items-center gap-1 rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-gray-100 hover:bg-gray-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        // className="w-full md:w-auto px-12 py-4 bg-gray-800 text-white rounded-lg font-medium hover:bg-gray-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5" 
+
                     >
                         <p className="text-base">Login/SignUp</p>
-                    </NavLink>
+                    </NavLink> :
+                    <div className='flex items-center gap-4'>
+
+                        {/* Logout Button */}
+                        <button 
+                            className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-red-500 to-red-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md hover:from-red-600 hover:to-red-700 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5"
+                            onClick={() => setToken("")}  
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                    }
                 </nav>
                 
             </div>

@@ -15,9 +15,9 @@ const ValiantContextProvider = (props)=>{
     const [cartItems,setCartItems] =useState({});
     const navigate = useNavigate();
     const [products,setProducts] = useState([]);
+    const [token,setToken]=useState(localStorage.getItem("valiantToken") || ' ');
 
     const addToCart =(itemId,size)=>{
-
         if(!size){
             toast.error("select product size");
             return;
@@ -94,9 +94,14 @@ const ValiantContextProvider = (props)=>{
         fetchProducts();
     },[])
 
+    
+    useEffect(()=>{
+        localStorage.setItem("token", token);
+    }, [token]);
+
     const val ={
         products,currency,deliveryFee,search,setSearch,ShowSearch,setShowSearch,cartItems,addToCart,getCartCount,
-        updateQuantity,getCartAmount,navigate,
+        updateQuantity,getCartAmount,navigate,token,setToken,backendUrl
     }
 
     return (

@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useContext } from 'react';
+import { ValiantContext } from '../context/ValiantContext';
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+  const {backendUrl,token,setToken, navigate} = useContext(ValiantContext);
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -21,13 +26,52 @@ const Signup = () => {
     }));
   };
 
-  const handleSubmit = () => {
-    if (isLogin) {
-      console.log('Login attempt:', { email: formData.email, password: formData.password });
-    } else {
-      console.log('Signup attempt:', formData);
+  const handleSubmit = async() => {
+    try{
+      if (isLogin) {
+        console.log('Login attempt:', { email: formData.email, password: formData.password });
+        const response = await axios.post(`${backendUrl}/api/user/login`,{
+          email: formData.email,
+          password: formData.password
+        });
+
+        if(response.data.success){
+          setToken(response.data.token);
+          localStorage.setItem("token",response.data.token);
+          navigate("/");
+        }
+        else{
+          toast.error(response.data.message);
+        }
+      } else {
+          console.log('Signup attempt:', formData);
+          if (formData.password !== formData.confirmPassword) {
+            toast.error("Passwords do not match");
+            return;
+          }
+
+          const response = await axios.post(`${backendUrl}/api/user/signup`,{
+            name: formData.fullName,
+            email: formData.email,
+            password: formData.password
+          });
+          
+          console.log(response);
+          if(response.data.success){
+            setToken(response.data.token);
+            localStorage.setItem("token",response.data.token);
+            navigate("/");
+          }
+          else{
+            toast.error(response.data.message);
+          }
+        }
     }
-  };
+    catch(error){
+      console.error("Error during submission:", error);
+      toast.error("Error during submission");
+    }
+};
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
