@@ -42,11 +42,11 @@ const addProduct = async (req, res) => {
 
         const product = new productModel(newProduct);
         await product.save();
-        res.status(201).json({ message: "Product added successfully", product });
+        res.json({success: true, message: "Product added successfully", product });
 
     } catch (error) {
         console.error("Error adding product:", error);
-        res.status(500).json({ message: "Internal server error" });
+        res.json({ success: false,  message: "Internal server error" });
     }    
 }
 
@@ -55,10 +55,10 @@ const addProduct = async (req, res) => {
 const listProducts = async (req, res) => {
     try {
         const products = await productModel.find({})
-        res.status(200).json(products);
+        res.status(200).json({success: true,message: "Products fetched successfully", products});
     } catch (error) {
         console.error("Error fetching products:", error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ success: false, message: "Internal server error" });
     }
 }
 
@@ -67,10 +67,10 @@ const listProducts = async (req, res) => {
 const removeProduct = async (req, res) => {
     try {
         await productModel.findByIdAndDelete(req.body.id);
-        res.status(200).json({ message: "Product removed successfully" });
+        res.status(200).json({success:true, message: "Product removed successfully" });
     }   catch (error) {
         console.error("Error removing product:", error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ success: false, message: "Internal server error" });
     }
 }
 
