@@ -58,7 +58,7 @@ function Cart() {
                                             <div className='w-full sm:w-24 h-32 sm:h-24 flex-shrink-0'>
                                                 <img 
                                                     className='w-full h-full object-cover rounded-lg' 
-                                                    src={productData.image[0]} 
+                                                    src={productData.images[0]} 
                                                     alt={productData.name}
                                                 />
                                             </div>

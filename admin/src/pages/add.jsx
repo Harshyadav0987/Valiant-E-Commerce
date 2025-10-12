@@ -1,8 +1,6 @@
 import { useState } from "react"
-import { assets } from "../assets/assets"
 import axios from 'axios'
 import { backendUrl } from '../App'
-import { toast } from "react-toastify"
 import { Upload, Package, DollarSign, Tag, Ruler } from "lucide-react"
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faUpload} from '@fortawesome/free-solid-svg-icons'

@@ -8,7 +8,7 @@
 //     const {productId} = useParams();
 //     const {products, currency,addToCart} = useContext(ValiantContext);
 //     const [productData, setProductData] = useState(null);
-//     const [image, setImage] = useState('');
+//     const [images, setimages] = useState('');
 //     const [size, setSize] = useState('');
 //     const [activeTab, setActiveTab] = useState('description');
 
@@ -16,7 +16,7 @@
 //         const product = products.find((item) => item._id === productId);
 //         if (product) {
 //             setProductData(product);
-//             setImage(product.image[0]);
+//             setimages(product.images[0]);
 //         }
 //     }
 
@@ -30,14 +30,14 @@
 //             {/* product data */}
 //             <div className='flex gap-12 sm:gap-12 flex-col sm:flex-row'>
                 
-//                 {/* Product Images */}
+//                 {/* Product imagess */}
 //                 <div className='flex-1 flex flex-col-reverse gap-3 sm:flex-row'>
-//                     {/* Thumbnail images */}
+//                     {/* Thumbnail imagess */}
 //                     <div className='flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full'>
 //                         {
-//                             productData.image.map((item, index) => (
+//                             productData.images.map((item, index) => (
 //                                 <img 
-//                                     onClick={() => setImage(item)}
+//                                     onClick={() => setimages(item)}
 //                                     src={item} 
 //                                     key={index} 
 //                                     className='w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer hover:opacity-80' 
@@ -47,9 +47,9 @@
 //                         }
 //                     </div>
                     
-//                     {/* Main image */}
+//                     {/* Main images */}
 //                     <div className='w-full sm:w-[80%]'>
-//                         <img src={image} className='w-full h-auto' alt="Main product"/>
+//                         <img src={images} className='w-full h-auto' alt="Main product"/>
 //                     </div>
 //                 </div>
 
@@ -105,7 +105,7 @@
 //                         <div>
 //                             <p>An e-commerce website is an online platform that facilitates the buying and selling of products or services over the internet. It serves as a virtual marketplace where businesses and individuals can showcase their products, interact with customers, and conduct transactions without the need for a physical presence. E-commerce websites have gained immense popularity due to their convenience, accessibility, and the global reach they offer.</p>
 //                             <br />
-//                             <p>E-commerce websites typically display products or services along with detailed descriptions, images, prices, and any available variations (e.g., sizes, colors). Each product usually has its own dedicated page with relevant information.</p>
+//                             <p>E-commerce websites typically display products or services along with detailed descriptions, imagess, prices, and any available variations (e.g., sizes, colors). Each product usually has its own dedicated page with relevant information.</p>
 //                         </div>
 //                     ) : (
 //                         <div>
@@ -200,7 +200,7 @@ function Product() {
     const {productId} = useParams();
     const {products, currency,addToCart} = useContext(ValiantContext);
     const [productData, setProductData] = useState(null);
-    const [image, setImage] = useState('');
+    const [images, setimages] = useState('');
     const [size, setSize] = useState('');
     const [activeTab, setActiveTab] = useState('description');
 
@@ -208,7 +208,7 @@ function Product() {
         const product = products.find((item) => item._id === productId);
         if (product) {
             setProductData(product);
-            setImage(product.image[0]);
+            setimages(product.images[0]);
         }
     }
 
@@ -224,16 +224,16 @@ function Product() {
                 {/* Product Details Section */}
                 <div className='flex gap-8 lg:gap-12 flex-col lg:flex-row'>
                     
-                    {/* Product Images */}
+                    {/* Product imagess */}
                     <div className='flex-1 flex flex-col-reverse gap-4 sm:flex-row'>
-                        {/* Thumbnail images */}
+                        {/* Thumbnail imagess */}
                         <div className='flex sm:flex-col overflow-x-auto sm:overflow-y-scroll gap-3 sm:gap-4 justify-start sm:justify-normal sm:w-[20%] w-full pb-2 sm:pb-0'>
                             {
-                                productData.image.map((item, index) => (
+                                productData.images.map((item, index) => (
                                     <div 
                                         key={index}
-                                        onClick={() => setImage(item)}
-                                        className={`relative flex-shrink-0 w-20 h-20 sm:w-full sm:h-auto sm:aspect-square rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 ${image === item ? 'border-gray-800 shadow-md' : 'border-gray-200 hover:border-gray-400 '}`}
+                                        onClick={() => setimages(item)}
+                                        className={`relative flex-shrink-0 w-20 h-20 sm:w-full sm:h-auto sm:aspect-square rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 ${images === item ? 'border-gray-800 shadow-md' : 'border-gray-200 hover:border-gray-400 '}`}
                                     >
                                         <img 
                                             src={item} 
@@ -245,11 +245,11 @@ function Product() {
                             }
                         </div>
                         
-                        {/* Main image */}
+                        {/* Main images */}
                         <div className='w-full sm:w-[78%] lg:flex-1'>
                             <div className='relative rounded-2xl overflow-hidden bg-gray-50 shadow-lg border border-gray-200'>
                                 <img 
-                                    src={image} 
+                                    src={images} 
                                     className='w-full h-auto object-cover' 
                                     alt="Main product"
                                 />
@@ -386,7 +386,7 @@ function Product() {
                                     An e-commerce website is an online platform that facilitates the buying and selling of products or services over the internet. It serves as a virtual marketplace where businesses and individuals can showcase their products, interact with customers, and conduct transactions without the need for a physical presence. E-commerce websites have gained immense popularity due to their convenience, accessibility, and the global reach they offer.
                                 </p>
                                 <p className='text-gray-600 leading-relaxed'>
-                                    E-commerce websites typically display products or services along with detailed descriptions, images, prices, and any available variations (e.g., sizes, colors). Each product usually has its own dedicated page with relevant information.
+                                    E-commerce websites typically display products or services along with detailed descriptions, imagess, prices, and any available variations (e.g., sizes, colors). Each product usually has its own dedicated page with relevant information.
                                 </p>
                             </div>
                         ) : (

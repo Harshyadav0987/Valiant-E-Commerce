@@ -33,7 +33,7 @@ function RelatedProducts({ category, subCategory }) {
                         id={item._id} 
                         name={item.name} 
                         price={item.price} 
-                        image={item.image} 
+                        images={item.images} 
                     />
                 ))}
             </div>

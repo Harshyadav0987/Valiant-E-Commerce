@@ -227,11 +227,11 @@ function Collection() {
     
     useEffect(()=>{
         applyFilter();
-    },[category,subCategory,search])
+    },[category,subCategory,search,products])
 
     useEffect(()=>{
         sortProduct();
-    },[sortType])
+    },[sortType,products])
 
   return (
     <div className='min-h-screen bg-gradient-to-b from-gray-50 to-white'>
@@ -402,7 +402,7 @@ function Collection() {
                         name={item.name} 
                         id={item._id} 
                         price={item.price} 
-                        image={item.image}
+                        images={item.images}
                       />
                     </div>
                   ))}

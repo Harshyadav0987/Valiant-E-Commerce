@@ -11,7 +11,7 @@ import { useToast,ToastContainer } from './components/Toast.jsx'
 
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
-export const currency = "₹";
+export const currency = import.meta.env.VITE_CURRENCY;
 function App() {
   const [token,setToken] =React.useState(localStorage.getItem("token") || "");
   const toast  = useToast();

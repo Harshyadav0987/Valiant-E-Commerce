@@ -2,12 +2,12 @@
 // import { ValiantContext } from '../context/ValiantContext'
 // import { Link } from 'react-router-dom'
 
-// function ProductItem({id,image,name,price}) {
+// function ProductItem({id,images,name,price}) {
 //     const {currency} = useContext(ValiantContext);
 //   return (
 //     <Link className='text-gray-800 cursor-pointer' to={`/product/${id}`} onClick={()=>window.scrollTo({top:0,behavior:'smooth'})}>
 //           <div className="overflow-hidden">
-//             <img className='hover:scale-110 transition ease-in-out' src={image[0]} alt="" />
+//             <img className='hover:scale-110 transition ease-in-out' src={images[0]} alt="" />
 //             <p className='pt-3 pb-1 text-sm'>{name}</p>
 //             <p className='text-sm font-medium'>{currency}{price}</p>
 //           </div>
@@ -22,7 +22,7 @@ import React, { useContext } from 'react'
 import { ValiantContext } from '../context/ValiantContext'
 import { Link } from 'react-router-dom'
 
-function ProductItem({id,image,name,price}) {
+function ProductItem({id,images,name,price}) {
     const {currency} = useContext(ValiantContext);
   return (
     <Link 
@@ -31,11 +31,11 @@ function ProductItem({id,image,name,price}) {
       onClick={()=>window.scrollTo({top:0,behavior:'smooth'})}
     >
       <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-500 ease-out">
-        {/* Image Container */}
+        {/* images Container */}
         <div className="relative overflow-hidden bg-gray-50 aspect-square">
           <img 
             className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out' 
-            src={image[0]} 
+            src={images?.[0] || " "} 
             alt={name} 
           />
           

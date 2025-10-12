@@ -1,17 +1,20 @@
 import { createContext, use, useEffect, useState } from "react";
-import {products} from '../assets/assets.js'
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 export const ValiantContext = createContext();
+import axios from "axios";
+
 
 const ValiantContextProvider = (props)=>{
     
-    const currency = "$"
+    const currency = import.meta.env.VITE_CURRENCY;
     const deliveryFee = 99;
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const [search,setSearch] =useState('');
     const [ShowSearch,setShowSearch] = useState(false);
     const [cartItems,setCartItems] =useState({});
     const navigate = useNavigate();
+    const [products,setProducts] = useState([]);
 
     const addToCart =(itemId,size)=>{
 
@@ -72,6 +75,24 @@ const ValiantContextProvider = (props)=>{
         return totalAmount
     }
 
+    const fetchProducts = async()=>{
+        try{
+            const response = await axios.get(`${backendUrl}/api/product/list`);
+        if(response.data.success){
+            setProducts(response.data.products);
+        }else{
+            toast.error("Error fetching products");
+        }
+        }catch(error){
+            console.error("Error fetching products:", error);
+            toast.error("Error fetching products");
+        }
+
+    }
+
+    useEffect(()=>{
+        fetchProducts();
+    },[])
 
     const val ={
         products,currency,deliveryFee,search,setSearch,ShowSearch,setShowSearch,cartItems,addToCart,getCartCount,

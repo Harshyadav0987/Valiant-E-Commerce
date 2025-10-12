@@ -28,7 +28,7 @@ function BestSeller() {
                 
                 {
                 BestProducts.map((item,index)=>(
-                    <ProductItem key={index} id={item._id} image={item.image} name={item.name} price={item.price}/> 
+                    <ProductItem key={index} id={item._id} images={item.images} name={item.name} price={item.price}/> 
                 ))
                 }
             </div>
