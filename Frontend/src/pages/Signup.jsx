@@ -37,7 +37,7 @@ const Signup = () => {
 
         if(response.data.success){
           setToken(response.data.token);
-          localStorage.setItem("token",response.data.token);
+          localStorage.setItem("valiantToken",response.data.token);
           navigate("/");
         }
         else{
@@ -59,7 +59,7 @@ const Signup = () => {
           console.log(response);
           if(response.data.success){
             setToken(response.data.token);
-            localStorage.setItem("token",response.data.token);
+            localStorage.setItem("valiantToken",response.data.token);
             navigate("/");
           }
           else{

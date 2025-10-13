@@ -39,7 +39,8 @@ const addToCart = async(req, res) => {
 
 const updateCart =async(req,res) => {
     try{
-        const {userId,itemId,size,quantity} = req.body;
+        const {itemId,size,quantity} = req.body;
+        const userId = req.userId;
 
         const userData = await userModel.findById(userId);
         let cartData = await userData.cartData; 
@@ -58,7 +59,8 @@ const updateCart =async(req,res) => {
 
 const getUserCart = async(req,res) => {
     try{
-        const {userId} = req.user.userId;
+        const userId = req.userId;
+        // console.log("UserId from getUserCart:",userId);
 
         const userData = await userModel.findById(userId);
         let cartData = await userData.cartData; 

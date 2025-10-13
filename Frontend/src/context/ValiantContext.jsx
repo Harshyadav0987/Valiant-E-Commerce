@@ -23,27 +23,29 @@ const ValiantContextProvider = (props)=>{
             return;
         }
 
-        const cartData = structuredClone(cartItems);
+        // const cartData = structuredClone(cartItems);
 
-        if(cartData[itemId]){
-            if(cartData[itemId][size]){
-                cartData[itemId][size]+=1;
-            }
-            else{
-                cartData[itemId][size]=1;
-            }
-        }
-        else{
-            cartData[itemId] ={};
-            cartData[itemId][size]=1;
-        }
+        // if(cartData[itemId]){
+        //     if(cartData[itemId][size]){
+        //         cartData[itemId][size]+=1;
+        //     }
+        //     else{
+        //         cartData[itemId][size]=1;
+        //     }
+        // }
+        // else{
+        //     cartData[itemId] ={};
+        //     cartData[itemId][size]=1;
+        // }
 
-        setCartItems(cartData)
+        // setCartItems(cartData)
 
         if(token){
             console.log(token);
             try{
                 await axios.post(`${backendUrl}/api/cart/add`,{itemId,size},{headers: {token}})
+                getUserCart();
+                toast.success("Item added to cart");
             }catch(error){
                 console.error("Error adding to cart:", error);
                 toast.error("Error adding to cart");
@@ -55,8 +57,8 @@ const ValiantContextProvider = (props)=>{
         let totalCount = 0;
 
         for(const items in cartItems){
-            for(const item in cartItems[items]){
-                totalCount+=cartItems[items][item];
+            for(const item in cartItems[items].sizes){
+                totalCount+=cartItems[items].sizes[item];
             }
         }
 
@@ -64,11 +66,35 @@ const ValiantContextProvider = (props)=>{
     }
 
     const updateQuantity = async (itemId,size,quantity)=>{
-        let cartData = structuredClone(cartItems );
+        // let cartData = structuredClone(cartItems );
         
-        cartData[itemId][size]=quantity;
+        // cartData[itemId][size]=quantity;
 
-        setCartItems(cartData);
+        // setCartItems(cartData);
+
+        if(token){
+            try{
+                await axios.post(`${backendUrl}/api/cart/update`,{itemId,size,quantity},{headers: {token}});
+                getUserCart();
+            }catch(error){
+                console.error("Error updating cart:", error);
+                toast.error("Error updating cart");
+            }
+        }
+    }
+
+    const getUserCart = async()=>{
+        if(token){
+            try{    
+                const response = await axios.get(`${backendUrl}/api/cart/get`,{headers: {token}});
+                if(response.data.success){
+                    setCartItems(response.data.cartData);
+                }
+            }catch(error){
+                console.error("Error fetching cart data:", error);
+                toast.error("Error fetching cart data");
+            }       
+        }
     }
 
     // Calculate total price
@@ -77,8 +103,8 @@ const ValiantContextProvider = (props)=>{
         for (const items in cartItems) {
             const itemInfo = products.find((product) => product._id === items)
             if (itemInfo) {
-                for(const item in cartItems[items]){
-                totalAmount += itemInfo.price * cartItems[items][item]
+                for(const item in cartItems[items].sizes){
+                totalAmount += itemInfo.price * cartItems[items].sizes[item]
                 }
             }
         }
@@ -106,8 +132,15 @@ const ValiantContextProvider = (props)=>{
 
     
     useEffect(()=>{
-        localStorage.setItem("valiantToken", token);
+        if(!token && localStorage.getItem("valiantToken")){
+            setToken(localStorage.getItem("valiantToken"));
+        }
+
+        if(token){
+             getUserCart(token);
+        }
     }, [token]);
+
 
     const val ={
         products,currency,deliveryFee,search,setSearch,ShowSearch,setShowSearch,cartItems,addToCart,getCartCount,

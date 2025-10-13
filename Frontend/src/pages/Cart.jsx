@@ -8,18 +8,31 @@ import CartTotal from '../components/CartTotal'
 function Cart() {
     const { products, currency, cartItems, updateQuantity,navigate } = useContext(ValiantContext)
     const [cartData, setCartData] = useState([])
-
     useEffect(() => {
         if (products.length > 0) {
             const tempData = []
             for (const items in cartItems) {
-                for (const item in cartItems[items]) {
-                    if (cartItems[items][item] > 0) {
-                        tempData.push({
-                            _id: items,
-                            size: item,
-                            quantity: cartItems[items][item]
-                        })
+                // Check if it has the 'sizes' property (backend structure)
+                if (cartItems[items].sizes) {
+                    for (const size in cartItems[items].sizes) {
+                        if (cartItems[items].sizes[size] > 0) {
+                            tempData.push({
+                                _id: items,
+                                size: size,
+                                quantity: cartItems[items].sizes[size]
+                            })
+                        }
+                    }
+                } else {
+                    // Fallback for direct structure
+                    for (const item in cartItems[items]) {
+                        if (cartItems[items][item] > 0) {
+                            tempData.push({
+                                _id: items,
+                                size: item,
+                                quantity: cartItems[items][item]
+                            })
+                        }
                     }
                 }
             }
