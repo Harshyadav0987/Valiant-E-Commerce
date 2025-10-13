@@ -301,7 +301,7 @@ function Collection() {
                   <h3 className='text-sm font-semibold text-gray-800 uppercase tracking-wider'>Categories</h3>
                 </div>
                 <div className='p-5 space-y-3'>
-                  {['Men', 'Women', 'Kids'].map((cat) => (
+                  {['Men', 'Woman', 'Kids'].map((cat) => (
                     <label key={cat} className='flex items-center gap-3 cursor-pointer group'>
                       <div className='relative'>
                         <input 

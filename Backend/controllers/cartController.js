@@ -3,10 +3,13 @@ import userModel from "../models/userModel.js";
 //Function to add item to cart
 const addToCart = async(req, res) => {
     try{
-        const {userId,itemId,size} = req.body;
-
+        const {itemId,size} = req.body;
+        const userId = req.userId;
+        // console.log("Data from cartcontroller","UserId:",userId,"ItemId:",itemId,"Size:",size);
         const userData = await userModel.findById(userId);
+        // console.log(userData);
         let cartData = await userData.cartData; 
+        // console.log(cartData);
 
         if(cartData[itemId]){
             //item already exists in cart

@@ -15,9 +15,9 @@ const ValiantContextProvider = (props)=>{
     const [cartItems,setCartItems] =useState({});
     const navigate = useNavigate();
     const [products,setProducts] = useState([]);
-    const [token,setToken]=useState(localStorage.getItem("valiantToken") || ' ');
+    const [token,setToken]=useState(localStorage.getItem("valiantToken") || '');
 
-    const addToCart =(itemId,size)=>{
+    const addToCart =async (itemId,size)=>{
         if(!size){
             toast.error("select product size");
             return;
@@ -39,6 +39,16 @@ const ValiantContextProvider = (props)=>{
         }
 
         setCartItems(cartData)
+
+        if(token){
+            console.log(token);
+            try{
+                await axios.post(`${backendUrl}/api/cart/add`,{itemId,size},{headers: {token}})
+            }catch(error){
+                console.error("Error adding to cart:", error);
+                toast.error("Error adding to cart");
+            }
+        }
     }
 
     const getCartCount= ()=>{
@@ -96,7 +106,7 @@ const ValiantContextProvider = (props)=>{
 
     
     useEffect(()=>{
-        localStorage.setItem("token", token);
+        localStorage.setItem("valiantToken", token);
     }, [token]);
 
     const val ={
