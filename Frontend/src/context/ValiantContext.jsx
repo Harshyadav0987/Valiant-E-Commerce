@@ -50,6 +50,9 @@ const ValiantContextProvider = (props)=>{
                 console.error("Error adding to cart:", error);
                 toast.error("Error adding to cart");
             }
+        }else{
+            navigate("/signup");
+            toast.info("Login to add items to cart");
         }
     }
 
