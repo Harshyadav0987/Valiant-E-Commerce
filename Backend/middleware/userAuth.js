@@ -15,7 +15,7 @@ const userAuth = (req, res, next) => {
         // console.log(decoded);
         // console.log(decoded.id);
         req.userId = decoded.id;
-        // console.log("userId:",req.userId);
+        console.log("userId:",req.userId);
         next();
     } catch (error) {
         return res.status(401).json({success: false, message: 'Invalid token' });

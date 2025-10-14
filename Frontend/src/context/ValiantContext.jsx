@@ -146,7 +146,7 @@ const ValiantContextProvider = (props)=>{
 
 
     const val ={
-        products,currency,deliveryFee,search,setSearch,ShowSearch,setShowSearch,cartItems,addToCart,getCartCount,
+        products,currency,deliveryFee,search,setSearch,ShowSearch,setShowSearch,cartItems,setCartItems,addToCart,getCartCount,
         updateQuantity,getCartAmount,navigate,token,setToken,backendUrl
     }
 
