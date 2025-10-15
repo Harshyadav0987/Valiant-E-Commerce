@@ -37,23 +37,39 @@ const addToCart = async(req, res) => {
 
 //Function to Update cart
 
-const updateCart =async(req,res) => {
-    try{
-        const {itemId,size,quantity} = req.body;
+const updateCart = async (req, res) => {
+    try {
+        const { itemId, size, quantity } = req.body;
         const userId = req.userId;
 
         const userData = await userModel.findById(userId);
-        let cartData = await userData.cartData; 
+        let cartData = userData.cartData; // already an array/object
 
-        cartData[itemId].sizes[size] = quantity;
+        if (quantity === 0) {
+            // Remove the size entry
+            if (cartData[itemId] && cartData[itemId].sizes) {
+                delete cartData[itemId].sizes[size];
 
-        await userModel.findByIdAndUpdate(userId, {cartData: cartData});
-        return res.status(200).json({success: true, message: 'Cart updated successfully', cartData: cartData});
+                // If no sizes left for this item, remove the item entirely
+                if (Object.keys(cartData[itemId].sizes).length === 0) {
+                    delete cartData[itemId];
+                }
+            }
+        } else {
+            // Update the quantity
+            if (!cartData[itemId]) cartData[itemId] = { sizes: {} };
+            cartData[itemId].sizes[size] = quantity;
+        }
+
+        await userModel.findByIdAndUpdate(userId, { cartData }, { new: true });
+
+        return res.status(200).json({ success: true, message: 'Cart updated successfully', cartData });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: 'Server Error' });
     }
-    catch(error){
-        return res.status(500).json({success: false, message: 'Server Error'});
-    }
-}
+};
+
 
 //Function to get user cart data 
 

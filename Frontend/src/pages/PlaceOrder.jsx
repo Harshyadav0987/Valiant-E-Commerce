@@ -48,14 +48,14 @@ function PlaceOrder() {
             let orderData ={
                 address : formdata,
                 items : orderItems,
-                amount : getCartAmount() + deliveryFee,
+                amount : getCartAmount() + deliveryFee + getCartAmount()*0.1,
             }
 
             switch(method){
                 case 'cod':
                     const response = await axios.post(`${backendUrl}/api/order/placeorder`,orderData,{headers: {token}});
                     if(response.data.success){
-                        setCartItems([])
+                        setCartItems({})
                         navigate('/orders')
                     }
                     else{

@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from 'react'
 import { ValiantContext } from '../context/ValiantContext'
 
 function CartTotal() {
-    const {currency,getCartAmount,navigate} = useContext(ValiantContext);
+    const {currency,getCartAmount,deliveryFee} = useContext(ValiantContext);
   return (
     <div>
       <div className='lg:col-span-1'>
@@ -16,7 +16,7 @@ function CartTotal() {
                                 </div>
                                 <div className='flex justify-between'>
                                     <span className='text-gray-600'>Shipping</span>
-                                    <span className='font-medium'>{currency}10.00</span>
+                                    <span className='font-medium'>{currency}{deliveryFee}</span>
                                 </div>
                                 <div className='flex justify-between'>
                                     <span className='text-gray-600'>Tax</span>
@@ -25,7 +25,7 @@ function CartTotal() {
                                 <hr className='my-3' />
                                 <div className='flex justify-between text-lg font-semibold'>
                                     <span>Total</span>
-                                    <span>{currency}{(getCartAmount() + 10 + (getCartAmount() * 0.1)).toFixed(2)}</span>
+                                    <span>{currency}{(getCartAmount() + 99 + (getCartAmount() * 0.1)).toFixed(2)}</span>
                                 </div>
                             </div>
 
