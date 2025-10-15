@@ -34,14 +34,14 @@ function Header(){
                     <NavLink className="flex flex-col items-center gap-1" to="/collection">
                         <p className="text-base my-2 hover:text-gray-500">COLLECTIONS</p>
                     </NavLink>
+                    <NavLink className="flex flex-col items-center gap-1" to="/orders">
+                        <p className="text-base my-2 hover:text-gray-500">ORDERS</p>
+                    </NavLink>
                     <NavLink className="flex flex-col items-center gap-1" to="/about">
                         <p className="text-base my-2 hover:text-gray-500">ABOUT</p>
                     </NavLink>
                     <NavLink className="flex flex-col items-center gap-1" to="/contact">
                         <p className="text-base my-2 hover:text-gray-500">CONTACT</p>
-                    </NavLink>
-                    <NavLink className="flex flex-col items-center gap-1" to="/orders">
-                        <p className="text-base my-2 hover:text-gray-500">ORDERS</p>
                     </NavLink>
                 </nav>
 

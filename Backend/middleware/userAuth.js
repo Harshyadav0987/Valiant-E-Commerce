@@ -1,11 +1,13 @@
 import jwt from 'jsonwebtoken';
 
-const userAuth = (req, res, next) => {
+const userAuth =async (req, res, next) => {
 
-    const {token} = req.headers;
-    // console.log(token);
+    const {token} = await req.headers;
+    //  console.log(token);
+    // console.log("check from userAuth");
 
     if (!token) {
+        // console.log("no token")
         return res.status(401).json({success: false, message: 'No token provided' });
     }
 

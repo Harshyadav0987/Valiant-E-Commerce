@@ -54,7 +54,15 @@ const allOrders = async (req,res)=>{
 //User orders data for frontend
 
 const userOrders = async (req,res)=>{
-
+    try{
+        // console.log("check done from controller")
+        const userId = req.userId;
+        const orders = await orderModel.find({userId});
+        res.json({success:true,orders});
+    }catch(error){
+        res.status(500).json({success:false,message: error.message});
+        console.log(error);
+    }
 }
 
 //Order status update by admin

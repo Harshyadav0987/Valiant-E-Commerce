@@ -16,7 +16,7 @@ orderRouter.post('/placestripeorder',userAuth,placeOrderStripe);
 orderRouter.post('/placerazorpayorder',userAuth, placeOrderRazorpay);
 
 //User Features
-orderRouter.get('/userorders', userOrders);
+orderRouter.get('/userorders',userAuth, userOrders);
 
 export default orderRouter;
 
