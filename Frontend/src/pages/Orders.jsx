@@ -4,7 +4,7 @@ import Title from '../components/Title';
 import axios from 'axios';
 
 const Orders = () => {
-  const {backendUrl, token, currency} = useContext(ValiantContext);
+  const {backendUrl, token, currency,deliveryFee} = useContext(ValiantContext);
 
   const [orderData, setOrderData] = useState([]);
 
@@ -111,7 +111,9 @@ const Orders = () => {
                       <div className='h-12 w-px bg-gray-600'></div>
                       <div>
                         <p className='text-xs text-gray-300 uppercase tracking-wider mb-1'>Total Amount</p>
-                        <p className='font-semibold text-lg'>{currency}{calculateOrderTotal(order.items).toFixed(2)}</p>
+                        <p className='font-semibold text-lg'>
+                          {currency + (calculateOrderTotal(order.items) * 1.1 + deliveryFee).toFixed(2)}
+                        </p>
                       </div>
                     </div>
                     <div className='flex items-center gap-3'>
