@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { backendUrl, currency } from '../App';
-import { toast } from 'react-toastify';
 import { assets } from '../assets/assets';
 import { Package, MapPin, Calendar, CreditCard, Phone, User } from 'lucide-react';
 
-const Orders = ({ token }) => {
+const Orders = ({ token ,toast}) => {
   const [orders, setOrders] = useState([]);
 
   const fetchAllOrders = async () => {
@@ -29,7 +28,7 @@ const Orders = ({ token }) => {
   const statusHandler = async (event, orderId) => {
     try {
       const response = await axios.post(
-        `${backendUrl}/api/order/status`,
+        `${backendUrl}/api/order/updatestatus`,
         { orderId, status: event.target.value },
         { headers: { token } }
       );
