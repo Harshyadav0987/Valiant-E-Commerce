@@ -18,13 +18,14 @@ const Verify = () => {
                 return null;
             }
             const response = await axios.post(backendUrl + '/api/order/verifyStripe', { success, orderId }, { headers: { token } });
-
+            console.log(orderId);
             if (response.data.success) {
                 setCartItems({});
                 navigate('/orders');
 
             } else {
                 navigate('/cart');
+                console.log(orderId);
             }
 
         } catch (error) {

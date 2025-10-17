@@ -128,7 +128,7 @@ const verifyStripe = async(req,res)=>{
             res.json({success:true,message:"success"})
         }
         else{
-            orderModel.findByIdAndDelete(orderId)
+            await orderModel.findByIdAndDelete(orderId)
             res.json({success:false})
         }
     }catch(error){
@@ -158,12 +158,15 @@ const placeOrderRazorpay = async (req, res) => {
         const options = {
             amount: Math.round(Number(amount) * 100),
             currency: currency.toUpperCase(),
-            receipt: orderData._id.toString() // ADD THIS - Very important!
+            receipt: orderData._id.toString()
         };
 
-        // Use promise instead of callback
         const order = await razorpayInstance.orders.create(options);
-        res.json({ success: true, order });
+        res.json({ 
+            success: true, 
+            order,
+            orderId: orderData._id.toString() // Return the MongoDB order ID
+        });
 
     } catch (error) {
         console.log(error);
@@ -197,6 +200,27 @@ const verifyRazorpay = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.json({ success: false, message: "Error in verify razorpay controller" });
+    }
+};
+//to delete if backs
+const deleteUnpaidOrder = async (req, res) => {
+    try {
+        const { orderId } = req.body;
+        const userId = req.userId;
+        
+        // Find order and check if it belongs to user and is unpaid
+        const order = await orderModel.findOne({ _id: orderId, userId: userId, payment: false });
+        
+        if (order) {
+            await orderModel.findByIdAndDelete(orderId);
+            res.json({ success: true, message: "Order cancelled" });
+        } else {
+            res.json({ success: false, message: "Order not found or already paid" });
+        }
+        
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
     }
 };
 
@@ -244,4 +268,4 @@ const updateStatus = async (req,res)=>{
     }
 }
 
-export {verifyRazorpay,verifyStripe,placeOrder,placeOrderStripe,placeOrderRazorpay,allOrders,userOrders,updateStatus};
+export {deleteUnpaidOrder,verifyRazorpay,verifyStripe,placeOrder,placeOrderStripe,placeOrderRazorpay,allOrders,userOrders,updateStatus};
