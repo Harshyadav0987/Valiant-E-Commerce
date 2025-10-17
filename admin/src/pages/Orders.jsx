@@ -13,7 +13,7 @@ const Orders = ({ token ,toast}) => {
     try {
       const response = await axios.get(`${backendUrl}/api/order/list`, { headers: { token } });
       if (response.data.success) {
-        // setOrders(response.data.orders);
+        setOrders(response.data.orders);
         const ord = ((response.data.orders).reverse())
         setOrders(ord);
       } else {

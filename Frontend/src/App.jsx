@@ -18,6 +18,7 @@ import Orders from './pages/Orders'
 import Signup from './pages/Signup'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import Verify from './pages/Verify.jsx'
 
 function App() {
 
@@ -108,6 +109,14 @@ function App() {
             element={
               <>
                 <Contact/>
+              </>
+            }
+          />
+          <Route
+            path={`/verify`}
+            element={
+              <>
+                <Verify/>
               </>
             }
           />
