@@ -1,3 +1,5 @@
+
+
 import React, { useContext, useState } from 'react'
 import Title from '../components/Title'
 import CartTotal from '../components/CartTotal'
@@ -165,9 +167,12 @@ return (
                 </div>
             </div>
         )}
+        <p>Mastercard	2305 3242 5784 8228	Random CVV	Any future date</p>
+        <p>Visa	4386 2894 0766 0153	Random CVV	Any future date</p>
 
-        <form onSubmit={handleSubmit} className='flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t '>
+        <form onSubmit={handleSubmit} className='flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t mx-20 '>
             {/* Left Side */}
+            
             <div className='flex flex-col gap-4 w-full sm:max-w-[480px] '>
                 <div className='text-xl sm:text-2xl my-3'>
                     <Title text1={'DELIVERY'} text2={'ADDRESS'}/>
@@ -219,12 +224,16 @@ return (
                     <button 
                         type="submit" 
                         disabled={loading}
-                        className={`bg-black text-white px-16 py-3 text-sm transition-opacity ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'}`}
+                        className={`bg-gray-900 text-white px-16 py-3 text-sm transition-opacity ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'}`}
                     >
                         {loading ? 'PROCESSING...' : 'PLACE YOUR ORDER'}
+    
                     </button>
+                    <p></p>
                 </div>
+
             </div>
+            
         </form>
     </>
 )
