@@ -30,23 +30,69 @@
 // }
 
 // export default Hero
-
 import { NavLink } from 'react-router-dom'
 import hero from '/Hero.png'
 
 function Hero() {
   return (
-    <div className="relative h-[85vh] flex items-center overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="container mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8 z-10">
+    <div className="relative bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Mobile and Tablet Layout */}
+      <div className="lg:hidden">
+        <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+          {/* Image Section - Mobile */}
+          <div className="relative h-[300px] sm:h-[400px] rounded-lg overflow-hidden mb-8">
+            <img 
+              src={hero} 
+              alt="Fashion model" 
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-50/30" />
+          </div>
+
+          {/* Content Section - Mobile */}
+          <div className="space-y-6">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <div className="h-px w-8 sm:w-12 bg-gray-800" />
+                <span className="text-[10px] sm:text-xs tracking-[0.2em] sm:tracking-[0.3em] text-gray-700 font-medium">
+                  EXCLUSIVE COLLECTION
+                </span>
+              </div>
+              
+              <h1 className="text-4xl sm:text-5xl font-light text-gray-900 leading-tight">
+                Latest
+                <span className="block mt-1 sm:mt-2 font-serif italic">Arrivals</span>
+              </h1>
+              
+              <p className="text-gray-600 text-base sm:text-lg leading-relaxed max-w-md">
+                Discover timeless elegance meets contemporary style in our carefully curated collection
+              </p>
+            </div>
+
+            <NavLink 
+              to="/collection" 
+              className="group inline-flex items-center gap-3 text-xs sm:text-sm tracking-wider font-medium text-gray-900 hover:gap-5 transition-all duration-300"
+            >
+              EXPLORE COLLECTION
+              <span className="text-lg sm:text-xl">→</span>
+            </NavLink>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Layout */}
+      <div className="hidden lg:flex relative h-[85vh] items-center overflow-hidden">
+        <div className="container mx-auto px-12 relative z-10">
+          <div className="max-w-2xl space-y-8">
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className="h-px w-12 bg-gray-800" />
-                <span className="text-xs tracking-[0.3em] text-gray-700 font-medium">EXCLUSIVE COLLECTION</span>
+                <span className="text-xs tracking-[0.3em] text-gray-700 font-medium">
+                  EXCLUSIVE COLLECTION
+                </span>
               </div>
               
-              <h1 className="text-5xl lg:text-7xl font-light text-gray-900 leading-tight">
+              <h1 className="text-7xl font-light text-gray-900 leading-tight">
                 Latest
                 <span className="block mt-2 font-serif italic">Arrivals</span>
               </h1>
@@ -56,28 +102,31 @@ function Hero() {
               </p>
             </div>
 
-            <NavLink to="/collection" className="group flex items-center gap-3 text-sm tracking-wider font-medium text-gray-900 hover:gap-5 transition-all duration-300">
+            <NavLink 
+              to="/collection" 
+              className="group inline-flex items-center gap-3 text-sm tracking-wider font-medium text-gray-900 hover:gap-5 transition-all duration-300"
+            >
               EXPLORE COLLECTION
               <span className="text-xl">→</span>
             </NavLink>
           </div>
-
-          <div className="relative lg:absolute lg:right-0 lg:top-0 lg:h-full lg:w-1/2">
-            <div className="relative h-[500px] lg:h-full">
-              <img 
-                src={hero} 
-                alt="Fashion model" 
-                className="w-full h-full object-cover object-center"
-              />
-              <div className="absolute inset-0 bg-gradient-to-l from-transparent to-gray-50 lg:to-gray-100" />
-            </div>
-          </div>
         </div>
-      </div>
 
-      <div className="absolute bottom-8 left-6 lg:left-12 flex items-center gap-6 text-xs text-gray-500">
-        <span>Scroll to explore</span>
-        <div className="h-px w-16 bg-gray-300" />
+        {/* Image Section - Desktop */}
+        <div className="absolute right-0 top-0 h-full w-1/2">
+          <img 
+            src={hero} 
+            alt="Fashion model" 
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent to-gray-100" />
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-12 flex items-center gap-6 text-xs text-gray-500 z-10">
+          <span>Scroll to explore</span>
+          <div className="h-px w-16 bg-gray-300" />
+        </div>
       </div>
     </div>
   )
