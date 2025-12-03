@@ -244,7 +244,7 @@ const Add = ({token,toast}) => {
                         : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                     }`}
                   >
-                    {size}
+                    {size} 
                   </button>
                 ))}
               </div>
