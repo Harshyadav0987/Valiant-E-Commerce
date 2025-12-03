@@ -2,6 +2,9 @@ import userModel from "../models/userModel.js";
 import validator from 'validator'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import Joi from 'joi'
+
+//function to create JWT token
 
 const createToken = (id) =>{
     return jwt.sign({id},process.env.JWT_SECRET,{
@@ -9,9 +12,21 @@ const createToken = (id) =>{
     })
 } 
 
+//Signup Schema for validation JOI
+const loginSchema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(8).required()
+});
+
 //route for user Login
 const userLogin= async (req,res)=>{
     try{
+
+        const {error} = loginSchema.validate(req.body,{abortEarly:false});
+        if(error){
+            console.log("Validation error:", error.details[0].message);
+            return res.json({success:false,message:error.details[0].message});
+        }
         const {email,password} = req.body;
         const user = await userModel.findOne({email});
 
@@ -32,24 +47,28 @@ const userLogin= async (req,res)=>{
     }
 }
 
+//Signup Schema for validation JOI
+
+const signupSchema = Joi.object({
+    name: Joi.string().min(3).max(30).required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().min(8).required()
+});
+
 //route for user Signup
 
 const userSignup= async (req,res)=>{
     try{
+        const {error} = signupSchema.validate(req.body,{abortEarly:false});
+        if(error){
+            console.log("Validation error:", error.details[0].message);
+            return res.json({success:false,message:error.details});
+        }
         const {name,email,password} =req.body;
         
         const exists = await userModel.findOne({email});
         if(exists){
             return res.json({success:false,message:'User already exists'})
-        }
-
-        //validating email format and strong password
-
-        if(!validator.isEmail(email)){
-            return res.json({success:false,message : "Invalid Email"})
-        }
-        if(password.length<8){
-            return res.json({success:false,message : "Enter stronger password"})
         }
 
         //hashing user password
