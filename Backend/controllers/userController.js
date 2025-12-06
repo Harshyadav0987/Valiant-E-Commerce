@@ -3,6 +3,7 @@ import validator from 'validator'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import Joi from 'joi'
+import sanitizeHtml from "sanitize-html";
 
 //function to create JWT token
 
@@ -55,6 +56,7 @@ const signupSchema = Joi.object({
     password: Joi.string().min(8).required()
 });
 
+
 //route for user Signup
 
 const userSignup= async (req,res)=>{
@@ -64,8 +66,19 @@ const userSignup= async (req,res)=>{
             console.log("Validation error:", error.details[0].message);
             return res.json({success:false,message:error.details});
         }
-        const {name,email,password} =req.body;
         
+        const {name,email,password} =req.body;
+
+        const cleanName = sanitizeHtml(name, {
+        allowedTags: [],
+        allowedAttributes: {}
+        }).trim();
+        
+        // ❗ If sanitization removes everything, reject
+        if (!cleanName) {
+        return res.json({ success:false, message:"Invalid name" });
+        }
+
         const exists = await userModel.findOne({email});
         if(exists){
             return res.json({success:false,message:'User already exists'})
@@ -74,9 +87,10 @@ const userSignup= async (req,res)=>{
         //hashing user password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password,salt);
+        console.log("cleanName:", cleanName);
 
         const newUser = new userModel ({
-            name ,
+            name:cleanName ,
             email,
             password:hashedPassword
         })
@@ -93,9 +107,26 @@ const userSignup= async (req,res)=>{
     }
 }
 
+
+//validation schema for admin login
+
+const adminLoginSchema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(8).required()
+});
+
+
+
 //route for admin login
 const adminLogin = async(req,res)=>{
     try{
+
+        const {error} = adminLoginSchema.validate(req.body,{abortEarly:false});
+        if(error){
+            console.log("Validation error:", error.details[0].message);
+            return res.json({success:false,message:error.details[0].message});
+        }
+        
         const {email,password} = req.body;
         if(email===process.env.ADMIN_EMAIL && password===process.env.ADMIN_PASSWORD){
             const token = jwt.sign(email+password,process.env.JWT_SECRET);
