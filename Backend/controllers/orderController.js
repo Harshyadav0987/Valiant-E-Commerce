@@ -202,9 +202,26 @@ const verifyRazorpay = async (req, res) => {
         res.json({ success: false, message: "Error in verify razorpay controller" });
     }
 };
-//to delete if backs
+//function to verify delete unpaid order body
+
+const deleteUnpaidOrderSchema = Joi.object({
+    orderId: Joi.string().length(24).hex().required()
+}); 
+
+//to delete if backspace is pressed on payment page
+
 const deleteUnpaidOrder = async (req, res) => {
     try {
+        const {error} = deleteUnpaidOrderSchema.validate(req.body);
+        if(error){
+            console.log("Delete unpaid order validation error:", error.details[0].message);
+            return res.status(400).json({success:false,message:error.details[0].message});
+        }
+
+        if (!mongoose.isValidObjectId(req.body.orderId)) {
+            return res.status(400).json({ success: false, message: "Invalid order ID" });
+        }
+
         const { orderId } = req.body;
         const userId = req.userId;
         
@@ -238,6 +255,8 @@ const allOrders = async (req,res)=>{
 
 }
 
+
+
 //User orders data for frontend
 
 const userOrders = async (req,res)=>{
@@ -252,10 +271,27 @@ const userOrders = async (req,res)=>{
     }
 }
 
+//function for verifying updatestatus body
+
+const updateStatusSchema = Joi.object({
+    orderId: Joi.string().length(24).hex().required(),
+    status: Joi.string().valid('pending', 'shipped', 'delivered', 'cancelled').required()
+});
+
 //Order status update by admin
 
 const updateStatus = async (req,res)=>{
     try{
+
+        const {error} = updateStatusSchema.validate(req.body);
+        if(error){
+            console.log("Update status validation error:", error.details[0].message);
+            return res.status(400).json({success:false,message:error.details[0].message});
+        }
+        if (!mongoose.isValidObjectId(req.body.orderId)) {
+            return res.status(400).json({ success: false, message: "Invalid order ID" });
+        }
+        
         const {orderId,status} = req.body;
         await orderModel.findByIdAndUpdate(orderId,{status})
 

@@ -126,10 +126,26 @@ const listProducts = async (req, res) => {
     }
 }
 
+//function to validate remove product request
+
+const removeProductSchema = Joi.object({
+    id: Joi.string().length(24).hex().required()
+});
+
 //Function to remove product 
 
 const removeProduct = async (req, res) => {
     try {
+        const {error} = removeProductSchema.validate(req.body);
+        if(error){
+            console.log("Remove product validation error:", error.details[0].message);
+            return res.status(400).json({success:false,message:error.details[0].message});
+        }
+
+        if (!mongoose.isValidObjectId(req.body.id)) {
+            return res.status(400).json({ success: false, message: "Invalid ID" });
+        }
+
         await productModel.findByIdAndDelete(req.body.id);
         res.status(200).json({success:true, message: "Product removed successfully" });
     }   catch (error) {
@@ -138,10 +154,26 @@ const removeProduct = async (req, res) => {
     }
 }
 
+//function to validate single product request
+
+const singleProductSchema = Joi.object({
+    productId: Joi.string().length(24).hex().required()
+});
+
 //function to get single product details
 
 const singleProduct = async (req, res) => {
     try {
+
+        const {error} = singleProductSchema.validate(req.body);
+        if(error){
+            console.log("Single product validation error:", error.details[0].message);
+            return res.status(400).json({success:false,message:error.details[0].message});
+        }
+
+        if (!mongoose.isValidObjectId(req.body.productId)) {    
+            return res.status(400).json({ success: false, message: "Invalid product ID" });
+        }
         const {productId} = req.body;
         const product = await productModel.findById(productId);
         res.status(200).json(product);

@@ -73,6 +73,9 @@
 
 import React, { useContext, useEffect, useState } from 'react'
 import { ValiantContext } from '../context/ValiantContext'
+import sanitizeHtml from 'sanitize-html';
+import { toast } from 'react-toastify';
+
 
 function SearchBar() {
   const { setSearch, ShowSearch, setShowSearch, navigate } = useContext(ValiantContext);
@@ -86,7 +89,25 @@ function SearchBar() {
   }, [ShowSearch]);
 
   const handleSearch = () => {
-    setSearch(query);
+
+    const cleanQuery = sanitizeHtml(query, {
+      allowedTags: [],
+      allowedAttributes: {}
+    }).trim();
+
+    if (!cleanQuery) {
+      toast.error("Please enter a search query, don't try to be smart");
+      setSearch('');
+      return;
+    }
+
+    if (cleanQuery.length > 100) {
+      toast.error("Search query too long");
+      return;
+    }
+
+
+    setSearch(cleanQuery);
     navigate('/collection');
   };
 

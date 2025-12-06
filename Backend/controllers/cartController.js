@@ -35,10 +35,29 @@ const addToCart = async(req, res) => {
     }
 }
 
+//function to validate update cart request
+
+const updateCartSchema = Joi.object({
+    itemId: Joi.string().length(24).hex().required(),
+    size: Joi.string().required(),
+    quantity: Joi.number().integer().min(0).required()
+});
+
 //Function to Update cart
 
 const updateCart = async (req, res) => {
     try {
+        const {error} = updateCartSchema.validate(req.body);
+        if(error){
+            console.log("Update cart validation error:", error.details[0].message);
+            return res.status(400).json({success:false,message:error.details[0].message});
+        }   
+
+        if (!mongoose.isValidObjectId(req.body.itemId)) {
+            return res.status(400).json({ success: false, message: "Invalid item ID" });
+        }
+
+
         const { itemId, size, quantity } = req.body;
         const userId = req.userId;
 
