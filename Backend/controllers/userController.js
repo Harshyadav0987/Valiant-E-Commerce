@@ -74,7 +74,7 @@ const userSignup= async (req,res)=>{
         allowedAttributes: {}
         }).trim();
         
-        // ❗ If sanitization removes everything, reject
+        // If sanitization removes everything, reject
         if (!cleanName) {
         return res.json({ success:false, message:"Invalid name" });
         }

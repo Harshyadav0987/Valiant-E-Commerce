@@ -1,54 +1,118 @@
 import {v2 as cloudinary} from 'cloudinary';
 import connectCloudinary from '../config/cloudinary.js';
 import productModel from '../models/productModel.js';
+import sanitizeHtml from 'sanitize-html';
+import Joi from 'joi';
+
+const addProductSchema = Joi.object({
+  name: Joi.string().min(2).max(200).required(),
+  description: Joi.string().min(5).max(5000).required(),
+  price: Joi.number().min(0).required(),
+  category: Joi.string().min(2).max(100).required(),
+  subCategory: Joi.string().required(),
+  sizes: Joi.string().required(), // will be JSON string from form-data
+  bestseller: Joi.string().valid("true", "false").required()
+});
+
 
 //Function to add a new product
 const addProduct = async (req, res) => {
+  try {
+    // 1) Validate body (text fields) with Joi
+    const { error } = addProductSchema.validate(req.body, { abortEarly: false });
+    if (error) {
+      console.log("Add product validation error:", error.details[0].message);
+      return res.json({ success: false, message: error.details[0].message });
+    }
+
+    let { name, description, price, category, subCategory, sizes, bestseller } = req.body;
+
+    // 2) Sanitize strings that will be shown in UI
+    const cleanName = sanitizeHtml(name, {
+      allowedTags: [],
+      allowedAttributes: {}
+    }).trim();
+
+    const cleanDescription = sanitizeHtml(description, {
+      allowedTags: [],
+      allowedAttributes: {}
+    }).trim();
+
+    const cleanCategory = sanitizeHtml(category, {
+      allowedTags: [],
+      allowedAttributes: {}
+    }).trim();
+
+    const cleanSubCategory = subCategory
+      ? sanitizeHtml(subCategory, {
+          allowedTags: [],
+          allowedAttributes: {}
+        }).trim()
+      : "";
+
+    // If name/description become empty after sanitization → reject
+    if (!cleanName || !cleanDescription) {
+      return res.json({ success: false, message: "Invalid name or description" });
+    }
+
+    // 3) Parse sizes safely
+    let parsedSizes;
     try {
-        const {name, description, price, category, subCategory,sizes,bestseller} = req.body;
-        
-        const image1= req.files.image1 && req.files.image1[0];
-        const image2= req.files.image2 && req.files.image2[0];
-        const image3= req.files.image3 && req.files.image3[0];
-        const image4= req.files.image4 && req.files.image4[0];
+      parsedSizes = JSON.parse(sizes); // expecting '["S","M","L"]'
+      if (!Array.isArray(parsedSizes)) {
+        throw new Error("Sizes should be an array");
+      }
+    } catch (e) {
+      return res.json({ success: false, message: "Invalid sizes format" });
+    }
 
-        // Collect all uploaded images
-        const images = [image1, image2, image3, image4].filter(img => img !== undefined);
-        await connectCloudinary();
+    // 4) Handle images
+    const image1 = req.files?.image1?.[0];
+    const image2 = req.files?.image2?.[0];
+    const image3 = req.files?.image3?.[0];
+    const image4 = req.files?.image4?.[0];
 
-        // Upload images to Cloudinary and get their URLs
+    const images = [image1, image2, image3, image4].filter(Boolean);
 
-        let imagesUrl = await Promise.all(
-            images.map(async (item) => {
-                let result = await cloudinary.uploader.upload(item.path,{resource_type:'image'});
-                return result.secure_url;
-            })
-        );
+    if (images.length === 0) {
+      return res.json({ success: false, message: "At least one product image is required" });
+    }
 
-        // Create a new product object
-        const newProduct = {
-            name,
-            description,
-            price:Number(price),
-            category,
-            subCategory,
-            sizes : JSON.parse(sizes),
-            bestseller : bestseller === 'true'? true : false,
-            images: imagesUrl,
-            date : Date.now()
-        };
+    await connectCloudinary();
 
-        console.log(newProduct);
+    let imagesUrl = await Promise.all(
+      images.map(async (item) => {
+        const result = await cloudinary.uploader.upload(item.path, {
+          resource_type: "image"
+        });
+        return result.secure_url;
+      })
+    );
 
-        const product = new productModel(newProduct);
-        await product.save();
-        res.json({success: true, message: "Product added successfully", product });
+    // 5) Build product object using CLEAN values
+    const newProduct = {
+      name: cleanName,
+      description: cleanDescription,
+      price: Number(price),
+      category: cleanCategory,
+      subCategory: cleanSubCategory,
+      sizes: parsedSizes,
+      bestseller: bestseller === "true",
+      images: imagesUrl,
+      date: Date.now()
+    };
 
-    } catch (error) {
-        console.error("Error adding product:", error);
-        res.json({ success: false,  message: "Internal server error" });
-    }    
-}
+    console.log("New product:", newProduct);
+
+    const product = new productModel(newProduct);
+    await product.save();
+
+    res.json({ success: true, message: "Product added successfully", product });
+  } catch (error) {
+    console.error("Error adding product:", error);
+    res.json({ success: false, message: "Internal server error" });
+  }
+};
 
 //Funtion to list products 
 
