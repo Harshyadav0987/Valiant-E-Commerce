@@ -245,7 +245,7 @@ const deleteUnpaidOrder = async (req, res) => {
 
 const allOrders = async (req,res)=>{
     try{
-        const orders = await orderModel.find({});
+        const orders = await orderModel.find({}).lean();
         res.json({success:true,orders});
 
     }catch(error){
@@ -263,7 +263,7 @@ const userOrders = async (req,res)=>{
     try{
         // console.log("check done from controller")
         const userId = req.userId;
-        const orders = await orderModel.find({userId});
+        const orders = await orderModel.find({userId}).lean();
         res.json({success:true,orders});
     }catch(error){
         res.status(500).json({success:false,message: error.message});

@@ -118,7 +118,7 @@ const addProduct = async (req, res) => {
 
 const listProducts = async (req, res) => {
     try {
-        const products = await productModel.find({})
+        const products = await productModel.find({}).lean();
         res.status(200).json({success: true,message: "Products fetched successfully", products});
     } catch (error) {
         console.error("Error fetching products:", error);
@@ -175,7 +175,7 @@ const singleProduct = async (req, res) => {
             return res.status(400).json({ success: false, message: "Invalid product ID" });
         }
         const {productId} = req.body;
-        const product = await productModel.findById(productId);
+        const product = await productModel.findById(productId).lean();
         res.status(200).json(product);
     }   catch (error) {
         console.error("Error fetching product:", error);

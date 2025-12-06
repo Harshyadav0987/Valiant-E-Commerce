@@ -97,7 +97,7 @@ const getUserCart = async(req,res) => {
         const userId = req.userId;
         // console.log("UserId from getUserCart:",userId);
 
-        const userData = await userModel.findById(userId);
+        const userData = await userModel.findById(userId).lean();
         let cartData = await userData.cartData; 
 
         return res.status(200).json({success: true, message: 'Cart data fetched successfully', cartData: cartData});
