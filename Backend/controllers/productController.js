@@ -3,6 +3,7 @@ import connectCloudinary from '../config/cloudinary.js';
 import productModel from '../models/productModel.js';
 import sanitizeHtml from 'sanitize-html';
 import Joi from 'joi';
+import redisClient from '../config/redis.js';
 
 const addProductSchema = Joi.object({
   name: Joi.string().min(2).max(200).required(),
@@ -104,6 +105,9 @@ const addProduct = async (req, res) => {
 
     console.log("New product:", newProduct);
 
+    await redisClient.del("products:list");
+    // 6) Save to DB    
+
     const product = new productModel(newProduct);
     await product.save();
 
@@ -117,14 +121,39 @@ const addProduct = async (req, res) => {
 //Funtion to list products 
 
 const listProducts = async (req, res) => {
-    try {
-        const products = await productModel.find({}).lean();
-        res.status(200).json({success: true,message: "Products fetched successfully", products});
-    } catch (error) {
-        console.error("Error fetching products:", error);
-        res.status(500).json({ success: false, message: "Internal server error" });
+  try {
+    const cacheKey = "products:list";
+
+    // 1) Check cache
+    const cached = await redisClient.get(cacheKey);
+    if (cached) {
+      console.log("📌 Cache HIT for product list");
+      return res.status(200).json({
+        success: true,
+        message: "Products fetched from cache",
+        products: JSON.parse(cached),
+      });
     }
-}
+
+    // 2) If no cache → hit DB
+    console.log("🌐 Cache MISS for product list");
+    const products = await productModel.find({}).lean();
+
+    // 3) Store in cache with TTL (e.g., 60 seconds)
+    await redisClient.set(cacheKey, JSON.stringify(products), { EX: 60 });
+
+    return res.status(200).json({
+      success: true,
+      message: "Products fetched successfully",
+      products,
+    });
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal server error" });
+  }
+};
 
 //function to validate remove product request
 
@@ -147,6 +176,8 @@ const removeProduct = async (req, res) => {
         }
 
         await productModel.findByIdAndDelete(req.body.id);
+        await redisClient.del("products:list");
+
         res.status(200).json({success:true, message: "Product removed successfully" });
     }   catch (error) {
         console.error("Error removing product:", error);

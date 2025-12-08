@@ -2,6 +2,9 @@ import userModel from "../models/userModel.js";
 import orderModel from "../models/orderModel.js";
 import Stripe from "Stripe"
 import razorpay from 'razorpay'
+import Joi from "joi";
+import redisClient from '../config/redis.js';
+import mongoose from "mongoose";
 
 const currency = 'USD'
 const deliveryFee = 99;
@@ -36,6 +39,8 @@ const placeOrder = async (req,res)=>{
         await orderData.save();
         
         await userModel.findByIdAndUpdate(userId, { cartData: {} });
+        await redisClient.del("orders:all");
+
 
         res.status(200).json({success:true,message : "Order placed successfully"});
     }
@@ -242,20 +247,41 @@ const deleteUnpaidOrder = async (req, res) => {
 };
 
 //All orders data for admin 
+const allOrders = async (req, res) => {
+  try {
+    const cacheKey = "orders:all";
 
-const allOrders = async (req,res)=>{
-    try{
-        const orders = await orderModel.find({}).lean();
-        res.json({success:true,orders});
-
-    }catch(error){
-        res.status(500).json({success:false,message : error.message});
-        console.log(error);
+    // 1) Check cache
+    const cached = await redisClient.get(cacheKey);
+    if (cached) {
+      console.log("📌 Cache HIT for allOrders");
+      return res.json({
+        success: true,
+        fromCache: true,
+        orders: JSON.parse(cached),
+      });
     }
 
-}
+    console.log("🌐 Cache MISS for allOrders");
 
+    // 2) Fetch from DB
+    const orders = await orderModel.find({}).lean();
 
+    // 3) Store in Redis with TTL (e.g. 60s–120s)
+    await redisClient.set(cacheKey, JSON.stringify(orders), { EX: 120 });
+
+    return res.json({
+      success: true,
+      fromCache: false,
+      orders,
+    });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, message: error.message || "Server error" });
+  }
+};
 
 //User orders data for frontend
 

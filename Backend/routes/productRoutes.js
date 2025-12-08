@@ -8,6 +8,6 @@ productRouter.post('/add',adminAuth,upload.fields([{name:'image1',maxCount:1},{n
 productRouter.post('/remove',adminAuth, removeProduct);
 // productRouter.post('/update', updateProduct);
 productRouter.get('/list', listProducts);
-productRouter.get('/single', singleProduct);
+productRouter.get('/single/:productId', singleProduct);
 
 export default productRouter;

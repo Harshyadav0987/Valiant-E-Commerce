@@ -1,4 +1,5 @@
 import userModel from "../models/userModel.js";
+import Joi from "joi";
 
 //Function to add item to cart
 const addToCart = async(req, res) => {
