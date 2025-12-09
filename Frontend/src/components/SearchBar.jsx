@@ -75,10 +75,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import { ValiantContext } from '../context/ValiantContext'
 import sanitizeHtml from 'sanitize-html';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 
 function SearchBar() {
-  const { setSearch, ShowSearch, setShowSearch, navigate } = useContext(ValiantContext);
+  const { setSearch, ShowSearch, setShowSearch, navigate,backendUrl } = useContext(ValiantContext);
   const [query, setQuery] = useState('');
 
   useEffect(() => {
@@ -88,27 +89,31 @@ function SearchBar() {
     }
   }, [ShowSearch]);
 
-  const handleSearch = () => {
+  const handleSearch = async() => {
 
-    const cleanQuery = sanitizeHtml(query, {
-      allowedTags: [],
-      allowedAttributes: {}
-    }).trim();
+   try{
+      // console.log(backendUrl);
+      if (!query) {
+        toast.error("Please enter a search query.");
+        return;
+      }
+      const res = await axios.get(`${backendUrl}/api/product/search`, {
+        params: {query : query }
+      });
 
-    if (!cleanQuery) {
-      toast.error("Please enter a search query, don't try to be smart");
-      setSearch('');
-      return;
-    }
+      if(res.data.success){
+        setSearch(res.data.products);
+        setShowSearch(false);
+        navigate('/collection');
+      }else{
+        toast.error(res.data.message || "Error occurred during search");
+        console.error("Search error:", res.data);
+      }
 
-    if (cleanQuery.length > 100) {
-      toast.error("Search query too long");
-      return;
-    }
-
-
-    setSearch(cleanQuery);
-    navigate('/collection');
+   }catch(error){
+      console.error("Error during search request:", error);
+      toast.error("An error occurred while searching. Please try again.");
+   }
   };
 
   const handleKeyDown = (e) => {

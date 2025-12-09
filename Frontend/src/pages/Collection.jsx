@@ -193,8 +193,8 @@ function Collection() {
     const applyFilter=()=>{
         let productsCopy = products.slice();
 
-        if(ShowSearch && search){
-            productsCopy = productsCopy.filter(item => item.name.toLowerCase().includes(search.toLowerCase()));
+        if(search){
+            productsCopy = search;
         }
 
         if(category.length>0){

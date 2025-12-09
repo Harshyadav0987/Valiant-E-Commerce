@@ -4,6 +4,7 @@ import productModel from '../models/productModel.js';
 import sanitizeHtml from 'sanitize-html';
 import Joi from 'joi';
 import redisClient from '../config/redis.js';
+import mongoose from 'mongoose';
 
 const addProductSchema = Joi.object({
   name: Joi.string().min(2).max(200).required(),
@@ -216,6 +217,53 @@ const singleProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
 
-}   
+}
 
-export {addProduct, listProducts, removeProduct, updateProduct, singleProduct};
+const validatesearchProductsSchema = Joi.object({
+    query: Joi.string().min(1).max(100).required()
+});
+
+const searchProducts = async (req, res) => {
+  try{
+    const { error } = validatesearchProductsSchema.validate(req.query);
+    // console.log("Search query:", req.query.query);
+    // console.log("Validation result:", error);
+    if (error) {
+      console.log("Search products validation error:", error.details[0].message);
+      return res.status(400).json({ success: false, message: error.details[0].message });
+    }
+
+    const {query} = req.query;
+    const cleanQuery = sanitizeHtml(query, {
+      allowedTags: [],
+      allowedAttributes: {}
+    }).trim();
+
+    // console.log("Cleaned search query:", cleanQuery);
+
+    if (!cleanQuery) {
+      res.status(200).json({ success: true, products: [] });
+      return;
+    }
+
+    if (cleanQuery.length > 100) {
+      res.status(400).json({ success: false, message: "Search query too long" });
+      return;
+    }
+  
+    const results = await productModel.find(
+      { $text: { $search: cleanQuery } },
+      { score: { $meta: "textScore" } }
+    )
+      .sort({score: {$meta: "textScore"}})
+      .lean();
+    // console.log("Search results:", results);
+    res.status(200).json({ success: true, products: results });
+  }
+  catch (error) {
+    console.error("Error searching products:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+export {addProduct, listProducts, removeProduct, updateProduct, singleProduct, searchProducts};

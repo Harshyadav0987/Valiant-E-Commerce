@@ -9,8 +9,7 @@ const productSchema = new mongoose.Schema({
     subCategory:{type:String ,required:true},
     sizes:{type:Array ,required:true},
     bestseller :{type:Boolean},
-    date : {type : Number ,required :true}
-})
+},{timestamps:true});
 
 productSchema.index({ name: "text", description: "text" });
 productSchema.index({ category: 1, subCategory: 1, price: 1 });
