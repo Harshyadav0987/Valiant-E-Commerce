@@ -6,7 +6,7 @@ import Joi from "joi";
 import redisClient from '../config/redis.js';
 import mongoose from "mongoose";
 
-const currency = 'USD'
+const currency = 'INR'
 const deliveryFee = 99;
 
 //payment gateway integration
@@ -301,7 +301,7 @@ const userOrders = async (req,res)=>{
 
 const updateStatusSchema = Joi.object({
     orderId: Joi.string().length(24).hex().required(),
-    status: Joi.string().valid('pending', 'shipped', 'delivered', 'cancelled').required()
+    status: Joi.string().valid('Pending', 'Shipped', 'Delivered', 'Cancelled').required()
 });
 
 //Order status update by admin

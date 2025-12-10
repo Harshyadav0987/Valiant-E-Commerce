@@ -77,12 +77,16 @@ import axios from 'axios'
 import { backendUrl, currency } from '../App'
 import { toast } from 'react-toastify'
 import { useEffect, useState } from "react"
-import { Trash2, Package, Search, Grid3x3 } from 'lucide-react'
+import { Trash2, Package, Search, Grid3x3 ,Edit} from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+
 
 const List = ({ token,toast }) => {
   const [list, setList] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
-
+  
+  const navigate = useNavigate();
   const fetchList = async () => {
     try {
       const response = await axios.get(backendUrl + '/api/product/list',{headers: { token }})
@@ -107,6 +111,16 @@ const List = ({ token,toast }) => {
       } else {
         console.error(response.data.message)
       }
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const updateProduct = async (id) => {
+    try {
+      console.log("updating product with id:", id);
+      navigate("/update/"+id);
       
     } catch (error) {
       console.log(error);
@@ -234,13 +248,20 @@ const List = ({ token,toast }) => {
                   </div>
 
                   {/* Action Button */}
-                  <div className="flex justify-start md:justify-center">
+                  <div className="flex justify-start md:justify-center gap-2 w-4 ml-3">
                     <button
                       onClick={() => removeProduct(item._id)}
-                      className="flex items-center gap-2 px-4 py-2 text-red-600 hover:text-white hover:bg-red-600 border border-red-200 hover:border-red-600 rounded-lg transition-all duration-200 group/btn"
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-red-600 hover:text-white hover:bg-red-600 border border-red-200 hover:border-red-600 rounded-lg transition-all duration-200"
                     >
-                      <Trash2 className="w-4 h-4" />
-                      <span className="text-sm font-medium">Delete</span>
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span className="font-medium">Delete</span>
+                    </button>
+                    <button
+                      onClick={() => updateProduct(item._id)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-blue-600 hover:text-white hover:bg-blue-600 border border-blue-200 hover:border-blue-600 rounded-lg transition-all duration-200"
+                    >
+                      <Edit className="w-3.5 h-3.5" />
+                      <span className="font-medium">Update</span>
                     </button>
                   </div>
                 </div>

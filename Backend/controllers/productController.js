@@ -196,28 +196,234 @@ const singleProductSchema = Joi.object({
 
 const singleProduct = async (req, res) => {
     try {
-
-        const {error} = singleProductSchema.validate(req.body);
+        const {error} = singleProductSchema.validate(req.params);
         if(error){
             console.log("Single product validation error:", error.details[0].message);
             return res.status(400).json({success:false,message:error.details[0].message});
         }
 
-        if (!mongoose.isValidObjectId(req.body.productId)) {    
+        if (!mongoose.isValidObjectId(req.params.productId)) {    
             return res.status(400).json({ success: false, message: "Invalid product ID" });
         }
-        const {productId} = req.body;
+        const {productId} = req.params;
         const product = await productModel.findById(productId).lean();
-        res.status(200).json(product);
+        res.status(200).json({ success: true, product });
     }   catch (error) {
         console.error("Error fetching product:", error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ success: false, message: "Internal server error" });
     }
 }
 
-const updateProduct = async (req, res) => {
+const updateProductSchema = Joi.object({
+  productId: Joi.string().required(),
+  name: Joi.string().min(2).max(200),
+  description: Joi.string().min(5).max(5000),
+  price: Joi.number().min(0),
+  category: Joi.string().min(2).max(100),
+  subCategory: Joi.string(),
+  sizes: Joi.string(), // will be JSON string from form-data
+  bestseller: Joi.string().valid("true", "false"),
+  existingImages: Joi.string() // JSON string of existing image URLs to keep
+});
 
-}
+// Function to update an existing product
+const updateProduct = async (req, res) => {
+  try {
+    // 1) Validate body with Joi
+    const { error } = updateProductSchema.validate(req.body, { 
+      abortEarly: false 
+    });
+    
+    if (error) {
+      console.log("Update product validation error:", error.details[0].message);
+      return res.json({ 
+        success: false, 
+        message: error.details[0].message 
+      });
+    }
+
+    const { productId } = req.params;
+    const { existingImages } = req.body;
+
+    // 2) Check if product exists
+    const existingProduct = await productModel.findById(productId);
+    if (!existingProduct) {
+      return res.json({ 
+        success: false, 
+        message: "Product not found" 
+      });
+    }
+
+    // 3) Build update object with sanitized values
+    const updateData = {};
+
+    // Sanitize and update name
+    if (req.body.name) {
+      const cleanName = sanitizeHtml(req.body.name, {
+        allowedTags: [],
+        allowedAttributes: {}
+      }).trim();
+      
+      if (!cleanName) {
+        return res.json({ 
+          success: false, 
+          message: "Invalid name" 
+        });
+      }
+      updateData.name = cleanName;
+    }
+
+    // Sanitize and update description
+    if (req.body.description) {
+      const cleanDescription = sanitizeHtml(req.body.description, {
+        allowedTags: [],
+        allowedAttributes: {}
+      }).trim();
+      
+      if (!cleanDescription) {
+        return res.json({ 
+          success: false, 
+          message: "Invalid description" 
+        });
+      }
+      updateData.description = cleanDescription;
+    }
+
+    // Update price
+    if (req.body.price !== undefined) {
+      updateData.price = Number(req.body.price);
+    }
+
+    // Sanitize and update category
+    if (req.body.category) {
+      updateData.category = sanitizeHtml(req.body.category, {
+        allowedTags: [],
+        allowedAttributes: {}
+      }).trim();
+    }
+
+    // Sanitize and update subCategory
+    if (req.body.subCategory) {
+      updateData.subCategory = sanitizeHtml(req.body.subCategory, {
+        allowedTags: [],
+        allowedAttributes: {}
+      }).trim();
+    }
+
+    // Parse and update sizes
+    if (req.body.sizes) {
+      try {
+        const parsedSizes = JSON.parse(req.body.sizes);
+        if (!Array.isArray(parsedSizes)) {
+          throw new Error("Sizes should be an array");
+        }
+        updateData.sizes = parsedSizes;
+      } catch (e) {
+        return res.json({ 
+          success: false, 
+          message: "Invalid sizes format" 
+        });
+      }
+    }
+
+    // Update bestseller
+    if (req.body.bestseller) {
+      updateData.bestseller = req.body.bestseller === "true";
+    }
+
+    // 4) Handle images
+    const image1 = req.files?.image1?.[0];
+    const image2 = req.files?.image2?.[0];
+    const image3 = req.files?.image3?.[0];
+    const image4 = req.files?.image4?.[0];
+    const newImages = [image1, image2, image3, image4].filter(Boolean);
+
+    // Parse existing images that should be kept
+    let keptImages = [];
+    if (existingImages) {
+      try {
+        keptImages = JSON.parse(existingImages);
+        if (!Array.isArray(keptImages)) {
+          keptImages = [];
+        }
+      } catch (e) {
+        console.log("Error parsing existingImages:", e);
+        keptImages = [];
+      }
+    }
+
+    // Upload new images to Cloudinary
+    let newImagesUrl = [];
+    if (newImages.length > 0) {
+      await connectCloudinary();
+      
+      newImagesUrl = await Promise.all(
+        newImages.map(async (item) => {
+          const result = await cloudinary.uploader.upload(item.path, {
+            resource_type: "image"
+          });
+          return result.secure_url;
+        })
+      );
+    }
+
+    // Combine kept images and new images
+    const finalImages = [...keptImages, ...newImagesUrl];
+
+    // Ensure at least one image exists
+    if (finalImages.length === 0) {
+      return res.json({ 
+        success: false, 
+        message: "At least one product image is required" 
+      });
+    }
+
+    updateData.images = finalImages;
+
+    // 5) Delete old images from Cloudinary that are no longer used
+    const oldImages = existingProduct.images || [];
+    const imagesToDelete = oldImages.filter(img => !keptImages.includes(img));
+    
+    if (imagesToDelete.length > 0) {
+      await connectCloudinary();
+      
+      // Extract public IDs and delete from Cloudinary
+      for (const imageUrl of imagesToDelete) {
+        try {
+          // Extract public ID from URL
+          const publicId = imageUrl.split('/').pop().split('.')[0];
+          await cloudinary.uploader.destroy(publicId);
+        } catch (deleteError) {
+          console.log("Error deleting old image:", deleteError);
+          // Continue even if deletion fails
+        }
+      }
+    }
+
+    // 6) Update the product in database
+    const updatedProduct = await productModel.findByIdAndUpdate(
+      productId,
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    // Clear Redis cache
+    await redisClient.del("products:list");
+
+    res.json({ 
+      success: true, 
+      message: "Product updated successfully", 
+      product: updatedProduct 
+    });
+
+  } catch (error) {
+    console.error("Error updating product:", error);
+    res.json({ 
+      success: false, 
+      message: "Internal server error" 
+    });
+  }
+};
 
 const validatesearchProductsSchema = Joi.object({
     query: Joi.string().min(1).max(100).required()

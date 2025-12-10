@@ -8,7 +8,7 @@ import Orders from './pages/Orders.jsx'
 import Login from './components/Login.jsx'
 import { useEffect } from 'react'
 import { useToast,ToastContainer } from './components/Toast.jsx'
-
+import Update from './pages/Update.jsx'
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 export const currency = import.meta.env.VITE_CURRENCY;
@@ -36,6 +36,7 @@ function App() {
                 <Route path='/add' element={<Add token={token} toast={toast}/>}/>
                 <Route path='/list' element={<List token={token} toast={toast}/>}/>
                 <Route path='/orders' element={<Orders token={token} toast={toast}/>}/>
+                <Route path='/update/:id' element={<Update token={token} toast={toast}/>}/>
               </Routes>
             </div>
           </div>
