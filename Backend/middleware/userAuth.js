@@ -1,26 +1,57 @@
 import jwt from 'jsonwebtoken';
 
-const userAuth =async (req, res, next) => {
-
-    const {token} = await req.headers;
-    //  console.log(token);
-    // console.log("check from userAuth");
+const userAuth = async (req, res, next) => {
+    const { token } = req.headers;
 
     if (!token) {
-        // console.log("no token")
-        return res.status(401).json({success: false, message: 'No token provided' });
+        return res.status(401).json({
+            success: false, 
+            message: 'Not authorized. Please login again.',
+            tokenExpired: true
+        });
     }
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        // console.log("data from userAuth");
-        // console.log(decoded);
-        // console.log(decoded.id);
+        
+        // Check if token is about to expire (within 1 hour)
+        const currentTime = Math.floor(Date.now() / 1000);
+        const timeUntilExpiry = decoded.exp - currentTime;
+        
+        if (timeUntilExpiry < 0) {
+            return res.status(401).json({
+                success: false, 
+                message: 'Session expired. Please login again.',
+                tokenExpired: true
+            });
+        }
+        
         req.userId = decoded.id;
-        // console.log("userId:",req.userId);
         next();
     } catch (error) {
-        return res.status(401).json({success: false, message: 'Invalid token' });
+        console.error("Token verification error:", error.message);
+        
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                success: false, 
+                message: 'Session expired. Please login again.',
+                tokenExpired: true
+            });
+        }
+        
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({
+                success: false, 
+                message: 'Invalid token. Please login again.',
+                tokenExpired: true
+            });
+        }
+        
+        return res.status(401).json({
+            success: false, 
+            message: 'Authentication failed. Please login again.',
+            tokenExpired: true
+        });
     }
 }
 

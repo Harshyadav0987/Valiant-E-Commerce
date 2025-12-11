@@ -1,9 +1,31 @@
 import userModel from "../models/userModel.js";
 import Joi from "joi";
+import mongoose from "mongoose";
+
+
+const isTokenValid = () => {
+  const token = localStorage.getItem('token');
+  if (!token) return false;
+  
+  try {
+    // Decode JWT token to check expiration
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const expiry = payload.exp * 1000; // Convert to milliseconds
+    return Date.now() < expiry;
+  } catch (error) {
+    return false;
+  }
+};
 
 //Function to add item to cart
 const addToCart = async(req, res) => {
     try{
+        if (!isTokenValid()) {
+            localStorage.removeItem('token');
+            toast.error('Session expired. Please login again.');
+            navigate('/login');
+            return;
+        }
         const {itemId,size} = req.body;
         const userId = req.userId;
         // console.log("Data from cartcontroller","UserId:",userId,"ItemId:",itemId,"Size:",size);
