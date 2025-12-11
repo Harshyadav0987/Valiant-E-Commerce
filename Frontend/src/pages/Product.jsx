@@ -218,7 +218,7 @@ function Product() {
     }, [productId, products])
 
     return productData ? (
-        <div className='bg-gradient-to-b from-gray-50 to-white min-h-screen'>
+        <div className='bg-gradient-to-b from-gray-50 to-white min-h-screen text-left'>
             <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 transition-opacity ease-in duration-500 opacity-100'>
                 
                 {/* Product Details Section */}
@@ -232,12 +232,12 @@ function Product() {
                                 productData.images.map((item, index) => (
                                     <div 
                                         key={index}
-                                        onClick={() => setimages(item)}
-                                        className={`relative flex-shrink-0 w-20 h-20 sm:w-full sm:h-auto sm:aspect-square rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 ${images === item ? 'border-gray-800 shadow-md' : 'border-gray-200 hover:border-gray-400 '}`}
+                                        onMouseEnter={() => setimages(item)}
+                                        className={`relative flex-shrink-0 w-20 h-20 sm:w-full sm:h-auto sm:aspect-square rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 ${images === item ? 'border-gray-800 shadow-md' : 'border-gray-200 hover:border-gray-400 '} `}
                                     >
                                         <img 
                                             src={item} 
-                                            className='w-full h-full object-cover' 
+                                            className={`w-full h-full object-cover hover:${() => setimages(item)}`}
                                             alt={`Thumbnail ${index + 1}`}
                                         />
                                     </div>

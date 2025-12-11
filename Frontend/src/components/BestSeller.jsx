@@ -51,7 +51,7 @@ function BestSeller() {
     useEffect(()=>{
         if (products && products.length > 0) {
           const bestProducts = products.filter((item)=>(item.bestseller));
-          setBestProducts(bestProducts.slice(0,5));
+          setBestProducts(bestProducts.reverse().slice(0,5));
         }
     },[products.length])
     

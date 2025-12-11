@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import axios from 'axios'
 import { backendUrl } from '../App'
-import { Upload, Package, DollarSign, Tag, Ruler, X } from "lucide-react"
+import { Upload, Package, DollarSign, Tag, Ruler, X ,IndianRupee} from "lucide-react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUpload } from '@fortawesome/free-solid-svg-icons'
 import { useParams } from "react-router-dom"
@@ -306,9 +306,9 @@ const Update = ({ token, toast }) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-800 mb-2">Price ($)</label>
+                  <label className="block text-sm font-medium text-gray-800 mb-2">Price (₹)</label>
                   <div className="relative">
-                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input 
                       onChange={(e) => setPrice(e.target.value)} 
                       value={price} 
