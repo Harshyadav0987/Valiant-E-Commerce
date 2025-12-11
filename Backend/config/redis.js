@@ -1,12 +1,7 @@
-import { createClient } from "redis";
+import Redis from "ioredis";
 
-const client = createClient({
-  url: "redis://localhost:6379",
+const redis = new Redis(process.env.REDIS_URL, {
+  tls: process.env.REDIS_URL.startsWith("rediss://") ? {} : undefined,
 });
 
-client.on("connect", () => console.log("🟢 Redis connected"));
-client.on("error", (err) => console.error("🔴 Redis error:", err));
-
-await client.connect();
-
-export default client;
+export default redis;

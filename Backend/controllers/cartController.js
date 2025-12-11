@@ -3,27 +3,28 @@ import Joi from "joi";
 import mongoose from "mongoose";
 
 
-const isTokenValid = () => {
-  const token = localStorage.getItem('token');
+const isTokenValid = (token) => {
+//   console.log("Validating token:", token);
   if (!token) return false;
-  
   try {
-    // Decode JWT token to check expiration
     const payload = JSON.parse(atob(token.split('.')[1]));
-    const expiry = payload.exp * 1000; // Convert to milliseconds
+    const expiry = payload.exp * 1000;
     return Date.now() < expiry;
   } catch (error) {
     return false;
   }
 };
 
+
 //Function to add item to cart
 const addToCart = async(req, res) => {
     try{
-        if (!isTokenValid()) {
+        const raw = req.headers.authorization || req.headers.token;
+        const token = raw && raw.startsWith("Bearer ") ? raw.split(" ")[1] : raw;
+        // console.log("Add to cart request received");
+        const check = isTokenValid(token);
+        if (!check)  {
             localStorage.removeItem('token');
-            toast.error('Session expired. Please login again.');
-            navigate('/login');
             return;
         }
         const {itemId,size} = req.body;

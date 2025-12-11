@@ -1,7 +1,10 @@
 import jwt from 'jsonwebtoken';
 
 const userAuth = async (req, res, next) => {
-    const { token } = req.headers;
+    // Accept either "Authorization: Bearer <token>" or legacy "token" header
+    const raw = req.headers.authorization || req.headers.token;
+    const token = raw && raw.startsWith("Bearer ") ? raw.split(" ")[1] : raw;
+    // console.log("Authenticating token:", token);
 
     if (!token) {
         return res.status(401).json({

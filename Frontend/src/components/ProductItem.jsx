@@ -44,9 +44,20 @@ function ProductItem({id,images,name,price}) {
           
           {/* Quick View Badge */}
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500">
-            <span className="bg-white/95 backdrop-blur-sm text-gray-800 px-4 py-2 rounded-full text-xs font-semibold shadow-lg border border-gray-200">
-              View Details
-            </span>
+           <span
+            className="
+              /* Default: small for mobile/tablet */
+              bg-white/90 backdrop-blur-sm text-gray-800 
+              px-2 py-1 text-[10px] rounded-md font-medium shadow-md border border-gray-300 whitespace-nowrap
+
+              /* Large screens: restore your older big style */
+              lg:bg-white/95 lg:px-4 lg:py-2 lg:text-xs lg:rounded-full lg:font-semibold lg:shadow-lg lg:border-gray-200
+            "
+          >
+            View Details
+          </span>
+
+
           </div>
         </div>
         
