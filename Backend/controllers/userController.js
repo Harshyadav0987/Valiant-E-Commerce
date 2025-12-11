@@ -8,7 +8,7 @@ import sanitizeHtml from "sanitize-html";
 //function to create JWT token with longer expiration
 const createToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET, {
-        expiresIn: '7d' // Changed from 1d to 7d for better UX
+        expiresIn: '7d' 
     })
 } 
 

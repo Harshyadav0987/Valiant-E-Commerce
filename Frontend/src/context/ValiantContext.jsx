@@ -22,7 +22,7 @@ const ValiantContextProvider = (props) => {
             (response) => response,
             (error) => {
                 if (error.response?.status === 401 && error.response?.data?.tokenExpired) {
-                    // Token expired - logout user
+                    // Token expired, logout user
                     handleLogout();
                     toast.error("Session expired. Please login again.");
                 }
