@@ -245,48 +245,14 @@ const deleteUnpaidOrder = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 };
-
 const allOrders = async (req, res) => {
   try {
-    const cacheKey = "orders:all";
-    
-    // 1) Try cache read
-    try {
-      const cached = await redisClient.get(cacheKey);
-      if (cached) {
-        console.log("📌 Cache HIT for allOrders");
-        return res.json({ 
-          success: true, 
-          fromCache: true, 
-          orders: JSON.parse(cached) 
-        });
-      }
-    } catch (readErr) {
-      console.warn("Redis GET failed:", readErr.message);
-    }
-    
-    console.log("🌐 Cache MISS - fetching from DB");
-    
-    // 2) Fetch from DB
+    console.log("🌐 Fetching all orders from DB (Redis disabled)");
     const ordersFromDb = await orderModel.find({}).lean();
     
-    // 3) Serialize safely
-    const safeOrders = JSON.parse(JSON.stringify(ordersFromDb));
-    const payload = JSON.stringify(safeOrders);
-    
-    // 4) Cache with node-redis syntax
-    try {
-      await redisClient.set(cacheKey, payload, "EX", 120);
-      console.log("✅ Cached successfully");
-    } catch (cacheErr) {
-      console.warn("⚠️ Cache write failed:", cacheErr.message);
-    }
-    
-    // 5) Return data
     return res.json({ 
       success: true, 
-      fromCache: false, 
-      orders: safeOrders 
+      orders: ordersFromDb 
     });
     
   } catch (error) {
