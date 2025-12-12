@@ -198,14 +198,14 @@ import RelatedProducts from '../components/RelatedProducts';
 
 function Product() {
     const {productId} = useParams();
-    const {products, currency,addToCart} = useContext(ValiantContext);
+    const {products, currency,addToCart,productsLoaded} = useContext(ValiantContext);
     const [productData, setProductData] = useState(null);
     const [images, setimages] = useState('');
     const [size, setSize] = useState('');
     const [activeTab, setActiveTab] = useState('description');
 
     const fetchProductData = async() => {
-        const product = products.find((item) => item._id === productId);
+        const product = products?.find((item) => item._id === productId);
         if (product) {
             setProductData(product);
             setimages(product.images[0]);

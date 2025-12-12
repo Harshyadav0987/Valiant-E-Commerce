@@ -48,9 +48,6 @@ function BestSeller() {
     const {products,productsLoaded} = useContext(ValiantContext);
     const [BestProducts,setBestProducts] = useState([]);
 
-      if(!productsLoaded){ return null;}
-
-
     useEffect(()=>{
         if (products && products.length > 0) {
           const bestProducts = products.filter((item)=>(item.bestseller));
