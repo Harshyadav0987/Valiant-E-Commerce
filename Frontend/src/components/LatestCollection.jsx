@@ -40,6 +40,9 @@
 // export default LatestCollection;import { useContext, useEffect, useState } from 'react';
 import { ValiantContext } from '../context/ValiantContext';
 import ProductItem from './ProductItem';
+import { React, useContext, useEffect, useState } from 'react';
+
+
 
 function LatestCollection() {
   const { products } = useContext(ValiantContext);

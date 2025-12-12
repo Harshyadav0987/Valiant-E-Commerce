@@ -42,6 +42,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ValiantContext } from '../context/ValiantContext';
 import ProductItem from './ProductItem';
+import { ShoppingBag, ArrowRight, Package, Shield, Headphones } from 'lucide-react';
+import Title from './Title';
 
 function BestSeller() {
   const { products } = useContext(ValiantContext);
