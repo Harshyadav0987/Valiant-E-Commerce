@@ -45,8 +45,11 @@ import Title from './Title';
 import ProductItem from './ProductItem';
 
 function LatestCollection() {
-  const {products}=useContext(ValiantContext);
+  const {products,productsLoaded}=useContext(ValiantContext);
   const [LatestProducts,setLatestProducts]=useState([]);
+
+  if(!productsLoaded){ return null;}
+
 
   useEffect(()=>{
     if (products && products.length > 0) {

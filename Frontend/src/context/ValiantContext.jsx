@@ -14,6 +14,7 @@ const ValiantContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
+    const [productsLoaded, setProductsLoaded] = useState(false);
     const [token, setToken] = useState(localStorage.getItem("valiantToken") || '');
 
     // Setup axios interceptor to handle 401 errors globally
@@ -142,6 +143,7 @@ const ValiantContextProvider = (props) => {
 
     // Calculate total price
     const getCartAmount = () => {
+        if(!productsLoaded) return 0;
         let totalAmount = 0;
         for (const items in cartItems) {
             const itemInfo = products.find((product) => product._id === items);
@@ -165,6 +167,8 @@ const ValiantContextProvider = (props) => {
         } catch (error) {
             console.error("Error fetching products:", error);
             toast.error("Error fetching products");
+        } finally {
+            setProductsLoaded(true);
         }
     };
 
@@ -200,7 +204,8 @@ const ValiantContextProvider = (props) => {
         token,
         setToken,
         backendUrl,
-        handleLogout
+        handleLogout,
+        productsLoaded
     };
 
     return (
