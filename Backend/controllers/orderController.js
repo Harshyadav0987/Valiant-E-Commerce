@@ -246,74 +246,55 @@ const deleteUnpaidOrder = async (req, res) => {
     }
 };
 
-//All orders data for admin 
-// Robust allOrders handler — drop this in to replace your current one
 const allOrders = async (req, res) => {
   try {
     const cacheKey = "orders:all";
-
-    // 1) Try read from cache
+    
+    // 1) Try cache read
     try {
       const cached = await redisClient.get(cacheKey);
       if (cached) {
         console.log("📌 Cache HIT for allOrders");
-        return res.json({ success: true, fromCache: true, orders: JSON.parse(cached) });
+        return res.json({ 
+          success: true, 
+          fromCache: true, 
+          orders: JSON.parse(cached) 
+        });
       }
     } catch (readErr) {
-      console.warn("Redis GET failed (continue):", readErr && readErr.message);
-      // continue to DB fetch
+      console.warn("Redis GET failed:", readErr.message);
     }
-
-    console.log("🌐 Cache MISS for allOrders (fetching DB)");
-
+    
+    console.log("🌐 Cache MISS - fetching from DB");
+    
     // 2) Fetch from DB
     const ordersFromDb = await orderModel.find({}).lean();
-
-    // 3) Build a safe JSON string (convert ObjectIds to strings to avoid weird serializations)
-    const safeOrders = ordersFromDb.map((o) => {
-      // shallow convert ObjectId fields -> string, and nested product ids if present
-      const copy = JSON.parse(JSON.stringify(o, (key, val) => {
-        // convert _id-like objects to string if they have toString
-        if (val && typeof val === "object" && typeof val.toString === "function" && val._bsontype === "ObjectID") {
-          return val.toString();
-        }
-        return val;
-      }));
-      return copy;
-    });
+    
+    // 3) Serialize safely
+    const safeOrders = JSON.parse(JSON.stringify(ordersFromDb));
     const payload = JSON.stringify(safeOrders);
-
-    // 4) Attempt to cache using ioredis style first, fallback to node-redis style if needed
+    
+    // 4) Cache with node-redis syntax
     try {
-      // Most common for ioredis: set(key, value, "EX", seconds)
-      await redisClient.set(cacheKey, payload, "EX", 120);
-      console.log("Redis SET succeeded (ioredis syntax)");
-    } catch (ioredisErr) {
-      console.warn("ioredis-style SET failed:", ioredisErr && ioredisErr.message);
-      try {
-        // node-redis style (object options) — some projects use this client
-        // safe attempt if you installed node-redis v4/v5
-        await redisClient.set(cacheKey, payload, { EX: 120 });
-        console.log("Redis SET succeeded (node-redis syntax)");
-      } catch (nodeRedisErr) {
-        // final fallback: try plain set without TTL
-        console.warn("node-redis-style SET failed:", nodeRedisErr && nodeRedisErr.message);
-        try {
-          await redisClient.set(cacheKey, payload);
-          console.log("Redis SET succeeded (no TTL fallback)");
-        } catch (finalErr) {
-          console.error("All Redis SET attempts failed:", finalErr && finalErr.message);
-          // optionally clear the key if it exists and is broken
-          try { await redisClient.del(cacheKey); } catch (e){ /* ignore */ }
-        }
-      }
+      await redisClient.set(cacheKey, payload, { EX: 120 });
+      console.log("✅ Cached successfully");
+    } catch (cacheErr) {
+      console.warn("⚠️ Cache write failed:", cacheErr.message);
     }
-
-    // 5) Return DB data
-    return res.json({ success: true, fromCache: false, orders: ordersFromDb });
+    
+    // 5) Return data
+    return res.json({ 
+      success: true, 
+      fromCache: false, 
+      orders: safeOrders 
+    });
+    
   } catch (error) {
-    console.error("allOrders handler error:", error);
-    return res.status(500).json({ success: false, message: error.message || "Server error" });
+    console.error("❌ allOrders error:", error);
+    return res.status(500).json({ 
+      success: false, 
+      message: "Failed to fetch orders" 
+    });
   }
 };
 
