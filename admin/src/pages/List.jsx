@@ -131,7 +131,7 @@ const List = ({ token,toast }) => {
     fetchList()
   }, [])
 
-  const filteredList = list.filter(item =>
+  const filteredList = list?.filter(item =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.category.toLowerCase().includes(searchTerm.toLowerCase())
   )
