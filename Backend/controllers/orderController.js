@@ -276,7 +276,7 @@ const allOrders = async (req, res) => {
     
     // 4) Cache with node-redis syntax
     try {
-      await redisClient.set(cacheKey, payload, { EX: 120 });
+      await redisClient.set(cacheKey, payload, "EX", 120);
       console.log("✅ Cached successfully");
     } catch (cacheErr) {
       console.warn("⚠️ Cache write failed:", cacheErr.message);
