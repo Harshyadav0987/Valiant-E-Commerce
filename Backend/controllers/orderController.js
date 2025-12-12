@@ -245,6 +245,7 @@ const deleteUnpaidOrder = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 };
+
 const allOrders = async (req, res) => {
   try {
     console.log("🌐 Fetching all orders from DB (Redis disabled)");
