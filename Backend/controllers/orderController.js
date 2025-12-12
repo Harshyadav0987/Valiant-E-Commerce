@@ -1,6 +1,6 @@
 import userModel from "../models/userModel.js";
 import orderModel from "../models/orderModel.js";
-import Stripe from "Stripe"
+import Stripe from "stripe"
 import razorpay from 'razorpay'
 import Joi from "joi";
 import redisClient from '../config/redis.js';
