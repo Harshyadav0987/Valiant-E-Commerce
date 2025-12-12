@@ -268,7 +268,7 @@ const allOrders = async (req, res) => {
     const orders = await orderModel.find({}).lean();
 
     // 3) Store in Redis with TTL (e.g. 60s–120s)
-    await redisClient.set(cacheKey, JSON.stringify(orders), { EX: 120 });
+    await redisClient.set(cacheKey, JSON.stringify(orders),  "EX", 120 );
 
     return res.json({
       success: true,
