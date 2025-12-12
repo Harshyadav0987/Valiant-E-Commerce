@@ -50,7 +50,7 @@ function LatestCollection() {
   const [loading, setLoading] = useState(true); // start true
 
   useEffect(() => {
-    if (products.length > 0) {
+    if (products?.length > 0) {
       setLatestProducts(products.slice(0, 10));
       setLoading(false); // stop loading when data arrives
     }

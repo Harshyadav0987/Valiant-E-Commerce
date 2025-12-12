@@ -51,7 +51,7 @@ function BestSeller() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (products.length > 0) {
+    if (products?.length > 0) {
       const filtered = products.filter(item => item.bestseller);
       setBestProducts(filtered.slice(0, 5));
       setLoading(false);
