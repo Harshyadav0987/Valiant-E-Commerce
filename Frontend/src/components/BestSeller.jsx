@@ -47,14 +47,24 @@ import ProductItem from './ProductItem';
 function BestSeller() {
     const {products} = useContext(ValiantContext);
     const [BestProducts,setBestProducts] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    if(!products || products.length === 0){ return <div>Loading...</div>;}
+    if(!products || products.length === 0){setLoading(true);}
+
+    if(loading){
+        return (
+            <div className="flex justify-center items-center h-48">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+            </div>
+          );
+    }
 
 
     useEffect(()=>{
         if (products && products.length > 0) {
           const bestProducts = products.filter((item)=>(item.bestseller));
           setBestProducts(bestProducts.reverse().slice(0,5));
+          setLoading(false);
         }
     },[products])
     
