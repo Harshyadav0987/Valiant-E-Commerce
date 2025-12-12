@@ -49,6 +49,16 @@ function BestSeller() {
     const [BestProducts,setBestProducts] = useState([]);
     const [loading, setLoading] = useState(false);
 
+    
+    
+    useEffect(()=>{
+      if (products && products.length > 0) {
+        const bestProducts = products.filter((item)=>(item.bestseller));
+        setBestProducts(bestProducts.reverse().slice(0,5));
+        setLoading(false);
+      }
+    },[products])
+    
     if(!products || products.length === 0){setLoading(true);}
 
     if(loading){
@@ -58,15 +68,6 @@ function BestSeller() {
             </div>
           );
     }
-
-
-    useEffect(()=>{
-        if (products && products.length > 0) {
-          const bestProducts = products.filter((item)=>(item.bestseller));
-          setBestProducts(bestProducts.reverse().slice(0,5));
-          setLoading(false);
-        }
-    },[products])
     
     return (
         <section className="py-8 bg-gray-50">

@@ -50,23 +50,23 @@ function LatestCollection() {
   const [LatestProducts,setLatestProducts]=useState([]);
   const [loading, setLoading] = useState(false);
 
-
-if(!products || products.length === 0){ setLoading(true);}
-
-if(loading){
-    return (
-        <div className="flex justify-center items-center h-48">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-        </div>
-      );
-}
-
+  
   useEffect(()=>{
     if (products && products.length > 0) {
       setLatestProducts(products.slice(0,10));
       setLoading(false);
     }
   },[products])
+  
+  if(!products || products.length === 0){ setLoading(true);}
+  
+  if(loading){
+      return (
+          <div className="flex justify-center items-center h-48">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+          </div>
+        );
+  }
   
   return (
     <section className="py-8 bg-white">
