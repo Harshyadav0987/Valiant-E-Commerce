@@ -53,7 +53,7 @@ function BestSeller() {
           const bestProducts = products.filter((item)=>(item.bestseller));
           setBestProducts(bestProducts.reverse().slice(0,5));
         }
-    },[products.length])
+    },[products])
     
     return (
         <section className="py-8 bg-gray-50">

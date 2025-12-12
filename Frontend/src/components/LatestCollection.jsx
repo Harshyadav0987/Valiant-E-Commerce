@@ -55,7 +55,7 @@ function LatestCollection() {
     if (products && products.length > 0) {
       setLatestProducts(products.slice(0,10));
     }
-  },[products.length])
+  },[products])
   
   return (
     <section className="py-8 bg-white">
