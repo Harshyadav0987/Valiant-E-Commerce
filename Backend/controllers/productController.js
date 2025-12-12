@@ -141,7 +141,7 @@ const listProducts = async (req, res) => {
     const products = await productModel.find({}).lean();
 
     // 3) Store in cache with TTL (e.g., 60 seconds)
-    await redisClient.set(cacheKey, JSON.stringify(products), { EX: 60 });
+    await redisClient.set(cacheKey, JSON.stringify(products),  "EX", 60 );
 
     return res.status(200).json({
       success: true,
