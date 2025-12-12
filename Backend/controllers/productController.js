@@ -106,11 +106,11 @@ const addProduct = async (req, res) => {
 
     console.log("New product:", newProduct);
 
-    await redisClient.del("products:list");
     // 6) Save to DB    
-
+    
     const product = new productModel(newProduct);
     await product.save();
+    await redisClient.del("products:list");
 
     res.json({ success: true, message: "Product added successfully", product });
   } catch (error) {
@@ -138,6 +138,12 @@ const listProducts = async (req, res) => {
 
     // 2) If no cache → hit DB
     console.log("🌐 Cache MISS for product list");
+
+    const product = await productModel.findById(productId).lean();
+
+    if (!product) return res.status(404).json({ success: false, message: "Product not found" });
+    res.status(200).json({ success: true, product });
+    
     const products = await productModel.find({}).lean();
 
     // 3) Store in cache with TTL (e.g., 60 seconds)
@@ -207,6 +213,7 @@ const singleProduct = async (req, res) => {
         }
         const {productId} = req.params;
         const product = await productModel.findById(productId).lean();
+        if (!product) return res.status(404).json({ success: false, message: "Product not found" });
         res.status(200).json({ success: true, product });
     }   catch (error) {
         console.error("Error fetching product:", error);
