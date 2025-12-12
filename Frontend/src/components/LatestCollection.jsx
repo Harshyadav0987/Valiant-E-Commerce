@@ -44,12 +44,13 @@ import { ValiantContext } from '../context/ValiantContext'
 import Title from './Title';
 import ProductItem from './ProductItem';
 
+
 function LatestCollection() {
-  const {products,productsLoaded}=useContext(ValiantContext);
+  const {products}=useContext(ValiantContext);
   const [LatestProducts,setLatestProducts]=useState([]);
 
-  if(!productsLoaded){ return null;}
 
+if(!products || products.length === 0){ return <div>Loading...</div>;}
 
   useEffect(()=>{
     if (products && products.length > 0) {

@@ -45,8 +45,11 @@ import Title from './Title'
 import ProductItem from './ProductItem';
 
 function BestSeller() {
-    const {products,productsLoaded} = useContext(ValiantContext);
+    const {products} = useContext(ValiantContext);
     const [BestProducts,setBestProducts] = useState([]);
+
+    if(!products || products.length === 0){ return <div>Loading...</div>;}
+
 
     useEffect(()=>{
         if (products && products.length > 0) {
