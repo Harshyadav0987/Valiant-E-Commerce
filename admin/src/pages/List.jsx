@@ -83,7 +83,7 @@ import { useParams } from 'react-router-dom'
 
 
 const List = ({ token,toast }) => {
-  const [list, setList] = useState([])
+  const [list, setList] = useState(null)
   const [searchTerm, setSearchTerm] = useState("")
   
   const navigate = useNavigate();
