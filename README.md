@@ -1,108 +1,162 @@
-# Valiant – Full Stack E-Commerce Platform
+🛒 Valiant — Production-Style E-Commerce Platform
 
-Valiant is a production-oriented full-stack e-commerce platform built using the MERN stack.
-It supports user authentication, product browsing, cart management, secure payments,
-order tracking, and an admin dashboard with performance optimizations using Redis caching.
+A full-stack e-commerce application built with a production mindset, focusing on scalability, performance, and real-world workflows such as authentication, payments, caching, and admin operations.
 
-## Tech Stack
+This project is not a toy CRUD app — it simulates how a real online store works end-to-end.
 
-**Frontend**
-- React
-- Tailwind CSS
-- Axios
+🚀 Why Valiant?
 
-**Backend**
-- Node.js
-- Express.js
-- MongoDB (Mongoose)
-- Redis (Caching & Session Management)
-- JWT Authentication
+Most student projects stop at “add to cart.”
+Valiant goes further by implementing:
 
-**Payments**
-- Stripe
-- Razorpay
+Secure authentication & authorization
 
-**Other Tools**
-- Docker (in progress)
-- Git & GitHub
+Admin-level controls
 
-## Features
+Payment gateway integration
 
-### User Features
-- User authentication with JWT
-- Product listing with category & text-based search
-- Wishlist and cart functionality
-- Secure checkout using Stripe and Razorpay
-- Order placement and real-time order status tracking
+Performance optimization using Redis
 
-### Admin Features
-- Admin dashboard for managing products, users, and orders
-- Order status updates (processing, shipped, delivered)
-- Protected admin routes
-- Optimized order fetching using Redis caching
+Clean backend architecture suitable for scaling
 
-### Performance & Security
-- Redis caching for frequently accessed data
-- Secure API routes with role-based access
-- Password hashing and token-based authentication
-- Optimized database queries using Mongoose
+🧩 Core Features
+👤 User Side
 
-## Project Architecture
+User authentication using JWT
 
-- Frontend communicates with backend via REST APIs
-- Backend handles authentication, business logic, and payments
-- MongoDB stores persistent data
-- Redis is used for caching and session optimization
-- Payment services handled via third-party gateways
+Product browsing with text-based search
 
-## Installation & Setup
+Add to cart, wishlist, and order tracking
 
-### Clone the repository
+Secure checkout using Stripe & Razorpay
 
-git clone https://github.com/Harahyadav0987/Valiant-E-Commerce.git
-cd Valiant
+Order history and status updates
 
-**Backend**
-cd Backend
+🛠 Admin Side
+
+Admin authentication & protected routes
+
+Manage products, users, and orders
+
+Update order statuses
+
+Centralized admin dashboard
+
+⚙️ Tech Stack
+
+Frontend
+
+React
+
+Tailwind CSS
+
+Axios
+
+Backend
+
+Node.js
+
+Express.js
+
+MongoDB (Mongoose)
+
+Redis (caching)
+
+JWT Authentication
+
+Payments
+
+Stripe
+
+Razorpay
+
+Deployment / DevOps
+
+Docker (in progress)
+
+Environment-based configuration
+
+🏗 Architecture Overview
+
+Client (React) communicates with backend APIs
+
+Backend (Node + Express) handles business logic
+
+MongoDB stores persistent data (users, products, orders)
+
+Redis caches frequently accessed data to reduce DB load
+
+Payment gateways handle secure transactions
+
+🧠 Performance Optimization
+
+Redis caching implemented for frequently accessed endpoints
+
+Reduced database calls for admin order listings
+
+Optimized API responses using lean queries
+
+🔐 Security Measures
+
+JWT-based authentication
+
+Role-based access control (User / Admin)
+
+Secure password hashing
+
+Environment variables for sensitive credentials
+
+Input validation to prevent common attacks
+
+🧪 Project Status
+
+✅ Core features implemented
+
+✅ Payments integrated
+
+✅ Redis caching added
+
+⏳ Dockerization (in progress)
+
+⏳ Automated tests (planned)
+
+🛠 Local Setup
+1️⃣ Clone the Repository
+git clone https://github.com/Harshyadav0987/Valiant-E-Commerce.git
+cd Valiant-E-Commerce
+
+2️⃣ Setup Environment Variables
+
+Create .env files for backend and frontend using .env.example.
+
+3️⃣ Install Dependencies
+# Backend
+cd backend
 npm install
+
+# Frontend
+cd frontend
+npm install
+
+4️⃣ Run the Application
+# Backend
+npm run server
+
+# Frontend
 npm run dev
 
-**Frontend**
-cd Frontend
-npm install
-npm run dev
+🌐 Live Demo
 
-**Admin**
-cd admin
-npm install
-npm run dev
+🔗 Live URL: https://valiant-0t1s.onrender.com/
+📸 Screenshots: 
+<img width="1918" height="977" alt="Screenshot 2025-12-13 172734" src="https://github.com/user-attachments/assets/e3bf8935-a5f6-4f25-85a8-6717b16f6f71" />
+<img width="1917" height="977" alt="Screenshot 2025-12-13 172755" src="https://github.com/user-attachments/assets/3207eb56-2571-483d-bfbf-d53b4ecfa063" />
+<img width="1916" height="979" alt="Screenshot 2025-12-13 172807" src="https://github.com/user-attachments/assets/ee38eb84-6c01-4920-8713-1d06810cb150" />
+<img width="1917" height="972" alt="Screenshot 2025-12-13 172824" src="https://github.com/user-attachments/assets/9749c0d8-1ada-41b8-a25f-410b15768f7d" />
+<img width="1919" height="867" alt="Screenshot 2025-12-13 172839" src="https://github.com/user-attachments/assets/1ab17957-3251-41f8-b344-d872c00c682c" />
 
-## API Overview
+Admin Panel
 
-- POST /api/user/login
-- POST /api/user/register
-- GET  /api/product/list
-- POST /api/order/place
-- GET  /api/order/list (Admin)
-
-## Future Improvements
-
-- Dockerized deployment with Docker Compose
-- Elasticsearch for advanced product search
-- Load balancing and horizontal scaling
-- Microservices-based architecture
-- CI/CD pipeline setup
-
-## Author
-
-Harsh Yadav  
-Computer Science & Design Student  
-Skilled in Full-Stack Web Development (MERN)
-
-## Documentation
-
-- 📄 [Software Requirements Specification (SRS)](docs/SRS.md)  
-  Defines the system requirements, architecture overview, user roles, and key functional and non-functional specifications for Valiant.
-
-
-
+<img width="1914" height="976" alt="Screenshot 2025-12-13 172907" src="https://github.com/user-attachments/assets/b95c9500-2c7f-4926-8fc9-99e2165e68dc" />
+<img width="1919" height="980" alt="Screenshot 2025-12-13 173242" src="https://github.com/user-attachments/assets/edc81021-f569-4088-b710-c7101aaaddc4" />
+"https://github.com/user-attachments/assets/c19ddfe3-b56a-44ce-a1e3-e48b07d1b016" />
