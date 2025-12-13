@@ -191,7 +191,7 @@ function Collection() {
     }
 
     const applyFilter=()=>{
-        let productsCopy = products.slice();
+        let productsCopy = products?.slice();
 
         if(search){
             productsCopy = search;

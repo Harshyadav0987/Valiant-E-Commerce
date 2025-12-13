@@ -13,7 +13,7 @@ const ValiantContextProvider = (props) => {
     const [ShowSearch, setShowSearch] = useState(false);
     const [cartItems, setCartItems] = useState({});
     const navigate = useNavigate();
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState(null);
     const [productsLoaded, setProductsLoaded] = useState(false);
     const [token, setToken] = useState(localStorage.getItem("valiantToken") || '');
 
