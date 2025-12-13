@@ -99,6 +99,10 @@ Harsh Yadav
 Computer Science & Design Student  
 Skilled in Full-Stack Web Development (MERN)
 
+## Documentation
+
+- 📄 [Software Requirements Specification (SRS)](docs/SRS.md)  
+  Defines the system requirements, architecture overview, user roles, and key functional and non-functional specifications for Valiant.
 
 
 
