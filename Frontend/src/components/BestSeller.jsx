@@ -1,69 +1,32 @@
-// import React, { useContext, useEffect, useState } from 'react'
-// import { ValiantContext } from '../context/ValiantContext'
-// import Title from './Title'
-// import ProductItem from './ProductItem';
-// import { ShoppingBag, ArrowRight, Package, Shield, Headphones } from 'lucide-react';
-
-
-// function BestSeller() {
-//     const {products} = useContext(ValiantContext);
-//     const [BestProducts,setBestProducts] = useState([]);
-
-
-//     useEffect(()=>{
-//         const bestProducts = products.filter((item)=>(item.bestseller));
-//         setBestProducts(bestProducts.slice(0,5));
-//     },[products])
-    
-//     // console.log(BestProducts)
-
-//     return (
-//         <div className='my-0 '> 
-//             <div className='text-center py-8 text-3xl'>
-//                 <Title text1={"BEST"} text2={"SELLERS"}/>
-//                 <p className='w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-800'>Tried, tested, and loved — our best sellers represent the perfect blend of trend and trust. Explore what makes them everyone’s go-to picks.</p>
-//             </div>
-
-//             {/* // displaying products */}
-
-//             <div className=' grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'> 
-                
-//                 {
-//                 BestProducts.map((item,index)=>(
-//                     <ProductItem key={index} id={item._id} images={item.images} name={item.name} price={item.price}/> 
-//                 ))
-//                 }
-//             </div>
-//         </div>
-//     )
-// }
-
-// export default BestSeller;
 import React, { useContext, useEffect, useState } from 'react';
 import { ValiantContext } from '../context/ValiantContext';
 import ProductItem from './ProductItem';
-import { ShoppingBag, ArrowRight, Package, Shield, Headphones } from 'lucide-react';
-import Title from './Title';
 
 function BestSeller() {
-  const { products } = useContext(ValiantContext);
+  const { products, productsLoaded } = useContext(ValiantContext);
   const [bestProducts, setBestProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (products?.length > 0) {
+    // ✅ Only filter when products actually loads
+    if (productsLoaded && products.length > 0) {
       const filtered = products.filter(item => item.bestseller);
       setBestProducts(filtered.slice(0, 5));
-      setLoading(false);
     }
-  }, [products]);
+  }, [products, productsLoaded]);
 
-  if (loading) {
+  // ✅ Show loading only when data hasn't loaded yet
+  if (!productsLoaded) {
     return (
       <div className="flex justify-center items-center h-48">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
       </div>
     );
+  }
+
+  // ✅ Don't show empty state - just return nothing if no bestsellers
+  // This allows the page to still render other sections
+  if (productsLoaded && bestProducts.length === 0) {
+    return null;
   }
 
   return (

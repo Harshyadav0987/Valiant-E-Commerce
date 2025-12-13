@@ -1,62 +1,20 @@
-// import {React,useContext, useEffect, useState} from 'react'
-// import { ValiantContext } from '../context/ValiantContext'
-// import Title from './Title';
-// import ProductItem from './ProductItem';
-
-
-
-// function LatestCollection() {
-//   const {products}=useContext(ValiantContext);
-//   const [LatestProducts,setLatestProducts]=useState([]);
-
-//   useEffect(()=>{
-//     setLatestProducts(products.slice(0,10));
-//   },[products])
-  
-//   return (
-//     <div className='my-0 '> 
-//       <div className='text-center py-8 text-3xl'>
-//         <Title text1={"LATEST"} text2={"COLLECTIONS"}/>
-//         <p className='w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-800'>Discover fashion made for every moment. Our latest arrivals feature a mix of everyday pieces and standout designs that redefine comfort, quality, and modern elegance.</p>
-//       </div>
-
-//       {/* // displaying products */}
-
-//       <div className=' grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'> 
-//                   {/* {console.log(LatestProducts)} */}
-
-//         {
-//           LatestProducts.map((item,index)=>(
-//             <ProductItem key={index} id={item._id} images={item.images} name={item.name} price={item.price}/> 
-//           ))
-//         }
-//       </div>
-
-//     </div>
-
-//   )
-// }
-
-// export default LatestCollection;import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ValiantContext } from '../context/ValiantContext';
 import ProductItem from './ProductItem';
-import { React, useContext, useEffect, useState } from 'react';
-
-
 
 function LatestCollection() {
-  const { products } = useContext(ValiantContext);
+  const { products, productsLoaded } = useContext(ValiantContext);
   const [LatestProducts, setLatestProducts] = useState([]);
-  const [loading, setLoading] = useState(true); // start true
 
   useEffect(() => {
-    if (products?.length > 0) {
+    // ✅ Only update when products actually loads
+    if (productsLoaded && products.length > 0) {
       setLatestProducts(products.slice(0, 10));
-      setLoading(false); // stop loading when data arrives
     }
-  }, [products]);
+  }, [products, productsLoaded]);
 
-  if (loading) {
+  // ✅ Show loading only when data hasn't loaded yet
+  if (!productsLoaded) {
     return (
       <div className="flex justify-center items-center h-48">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
@@ -64,10 +22,15 @@ function LatestCollection() {
     );
   }
 
+  // ✅ Don't show empty state - just return nothing if no products
+  // This allows the page to still render other sections
+  if (productsLoaded && products.length === 0) {
+    return null;
+  }
+
   return (
     <section className="py-8 bg-white">
       <div className="container mx-auto px-6 lg:px-12">
-        {/* 👇 YOUR DESIGN — UNTOUCHED */}
         <div className="max-w-3xl mx-auto text-center mb-9 space-y-2">
           <div className="flex items-center justify-center gap-3">
             <div className="h-px w-8 bg-gray-300" />

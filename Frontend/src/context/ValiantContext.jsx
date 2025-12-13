@@ -13,7 +13,7 @@ const ValiantContextProvider = (props) => {
     const [ShowSearch, setShowSearch] = useState(false);
     const [cartItems, setCartItems] = useState({});
     const navigate = useNavigate();
-    const [products, setProducts] = useState(null);
+    const [products, setProducts] = useState([]); // ✅ Initialize as empty array instead of null
     const [productsLoaded, setProductsLoaded] = useState(false);
     const [token, setToken] = useState(localStorage.getItem("valiantToken") || '');
 
@@ -41,7 +41,7 @@ const ValiantContextProvider = (props) => {
         localStorage.removeItem("valiantToken");
         setCartItems({});
         navigate("/signup");
-        window.location.reload(); // Force reload to clear all state
+        window.location.reload();
     };
 
     const addToCart = async (itemId, size) => {
@@ -67,7 +67,6 @@ const ValiantContextProvider = (props) => {
             } catch (error) {
                 console.error("Error adding to cart:", error);
                 if (error.response?.data?.tokenExpired) {
-                    // Token expired, will be handled by interceptor
                     return;
                 }
                 toast.error("Error adding to cart");
@@ -107,7 +106,6 @@ const ValiantContextProvider = (props) => {
             } catch (error) {
                 console.error("Error updating cart:", error);
                 if (error.response?.data?.tokenExpired) {
-                    // Token expired, will be handled by interceptor
                     return;
                 }
                 toast.error("Error updating cart");
@@ -133,7 +131,6 @@ const ValiantContextProvider = (props) => {
             } catch (error) {
                 console.error("Error fetching cart data:", error);
                 if (error.response?.data?.tokenExpired) {
-                    // Token expired, will be handled by interceptor
                     return;
                 }
                 toast.error("Error fetching cart data");
@@ -143,7 +140,7 @@ const ValiantContextProvider = (props) => {
 
     // Calculate total price
     const getCartAmount = () => {
-        if(!productsLoaded) return 0;
+        if(!productsLoaded || products.length === 0) return 0; // ✅ Better check
         let totalAmount = 0;
         for (const items in cartItems) {
             const itemInfo = products.find((product) => product._id === items);
@@ -158,17 +155,20 @@ const ValiantContextProvider = (props) => {
 
     const fetchProducts = async () => {
         try {
+            setProductsLoaded(false); // ✅ Set loading state
             const response = await axios.get(`${backendUrl}/api/product/list`);
             if (response.data.success) {
-                setProducts(response.data.products);
+                setProducts(response.data.products || []); // ✅ Fallback to empty array
             } else {
                 toast.error("Error fetching products");
+                setProducts([]); // ✅ Set empty array on error
             }
         } catch (error) {
             console.error("Error fetching products:", error);
             toast.error("Error fetching products");
+            setProducts([]); // ✅ Set empty array on error
         } finally {
-            setProductsLoaded(true);
+            setProductsLoaded(true); // ✅ Always set loaded to true
         }
     };
 
