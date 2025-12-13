@@ -62,17 +62,17 @@ order tracking, and an admin dashboard with performance optimizations using Redi
 git clone https://github.com/Harahyadav0987/Valiant-E-Commerce.git
 cd Valiant
 
-##Backend Setup
+**Backend**
 cd Backend
 npm install
 npm run dev
 
-##Frontend setup
+**Frontend**
 cd Frontend
 npm install
 npm run dev
 
-##Admin setup
+**Admin**
 cd admin
 npm install
 npm run dev
