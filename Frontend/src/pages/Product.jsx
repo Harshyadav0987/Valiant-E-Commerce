@@ -197,7 +197,7 @@ import RelatedProducts from '../components/RelatedProducts';
 
 function Product() {
     const {productId} = useParams();
-    const {products, currency, addToCart, productsLoaded} = useContext(ValiantContext);
+    const {products, currency, addToCart, productsLoaded, wishlist, addToWishlist, removeFromWishlist} = useContext(ValiantContext);
     const [productData, setProductData] = useState(null);
     const [images, setimages] = useState('');
     const [size, setSize] = useState('');
@@ -339,16 +339,39 @@ function Product() {
                                 </div>
                             </div>
 
-                            {/* Add to Cart Button */}
-                            <button 
-                                className='w-full mt-8 bg-gray-900 text-white px-8 py-4 text-sm font-bold uppercase tracking-wider rounded-xl hover:bg-gray-800 active:scale-98 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 group' 
-                                onClick={()=>addToCart(productData._id,size)}
-                            >
-                                <svg className='w-5 h-5 group-hover:scale-110 transition-transform' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z' />
-                                </svg>
-                                Add to Cart
-                            </button>
+                            {/* Add to Cart & Wishlist Buttons */}
+                            <div className='flex gap-4'>
+                                <button 
+                                    className='flex-1 mt-8 bg-gray-900 text-white px-8 py-4 text-sm font-bold uppercase tracking-wider rounded-xl hover:bg-gray-800 active:scale-98 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 group' 
+                                    onClick={()=>addToCart(productData._id,size)}
+                                >
+                                    <svg className='w-5 h-5 group-hover:scale-110 transition-transform' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z' />
+                                    </svg>
+                                    Add to Cart
+                                </button>
+
+                                <button 
+                                    className={`mt-8 px-6 py-4 rounded-xl border-2 flex items-center justify-center transition-all duration-300 ${wishlist && wishlist.includes(productData._id) ? 'border-red-500 bg-red-50 text-red-500 hover:bg-red-100' : 'border-gray-300 text-gray-500 hover:border-gray-900 hover:text-gray-900'}`}
+                                    onClick={() => {
+                                        if (wishlist && wishlist.includes(productData._id)) {
+                                            removeFromWishlist(productData._id);
+                                        } else {
+                                            addToWishlist(productData._id);
+                                        }
+                                    }}
+                                    title={wishlist && wishlist.includes(productData._id) ? "Remove from wishlist" : "Add to wishlist"}
+                                >
+                                    <svg 
+                                        className='w-6 h-6' 
+                                        fill={wishlist && wishlist.includes(productData._id) ? "currentColor" : "none"} 
+                                        stroke="currentColor" 
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                </button>
+                            </div>
 
                             {/* Product Features */}
                             <div className='mt-8 bg-gray-50 rounded-xl p-6 border border-gray-200'>

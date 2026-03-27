@@ -172,9 +172,67 @@ const ValiantContextProvider = (props) => {
         }
     };
 
+    const [wishlist, setWishlist] = useState([]);
+
     useEffect(() => {
         fetchProducts();
     }, []);
+
+    const getUserWishlist = async () => {
+        if (token) {
+            try {
+                const response = await axios.get(`${backendUrl}/api/wishlist/get`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (response.data.success) {
+                    setWishlist(response.data.wishlist || []);
+                }
+            } catch (error) {
+                console.error("Error fetching wishlist:", error);
+            }
+        }
+    };
+
+    const addToWishlist = async (itemId) => {
+        if (token) {
+            try {
+                const response = await axios.post(`${backendUrl}/api/wishlist/add`, { itemId }, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (response.data.success) {
+                    setWishlist(response.data.wishlist);
+                    toast.success("Added to wishlist");
+                } else {
+                    toast.error(response.data.message);
+                }
+            } catch (error) {
+                console.error("Error adding to wishlist:", error);
+                toast.error("Error adding to wishlist");
+            }
+        } else {
+            toast.info("Login to add to wishlist");
+            navigate("/signup");
+        }
+    };
+
+    const removeFromWishlist = async (itemId) => {
+        if (token) {
+            try {
+                const response = await axios.post(`${backendUrl}/api/wishlist/remove`, { itemId }, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (response.data.success) {
+                    setWishlist(response.data.wishlist);
+                    toast.success("Removed from wishlist");
+                } else {
+                    toast.error(response.data.message);
+                }
+            } catch (error) {
+                console.error("Error removing from wishlist:", error);
+                toast.error("Error removing from wishlist");
+            }
+        }
+    };
 
     useEffect(() => {
         if (!token && localStorage.getItem("valiantToken")) {
@@ -183,6 +241,7 @@ const ValiantContextProvider = (props) => {
 
         if (token) {
             getUserCart();
+            getUserWishlist();
         }
     }, [token]);
 
@@ -205,7 +264,10 @@ const ValiantContextProvider = (props) => {
         setToken,
         backendUrl,
         handleLogout,
-        productsLoaded
+        productsLoaded,
+        wishlist,
+        addToWishlist,
+        removeFromWishlist
     };
 
     return (

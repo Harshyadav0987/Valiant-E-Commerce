@@ -19,6 +19,7 @@ import Signup from './pages/Signup'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Verify from './pages/Verify.jsx'
+import Wishlist from './pages/Wishlist.jsx'
 
 function App() {
 
@@ -117,6 +118,14 @@ function App() {
             element={
               <>
                 <Verify/>
+              </>
+            }
+          />
+          <Route
+            path={`/wishlist`}
+            element={
+              <>
+                <Wishlist/>
               </>
             }
           />

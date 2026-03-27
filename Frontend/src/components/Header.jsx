@@ -165,13 +165,13 @@
 import React, { useContext, useState } from "react";
 import Logo from "./Logo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faBars, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faBars, faMagnifyingGlass, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { NavLink, Link } from 'react-router-dom';
 import { ValiantContext } from "../context/ValiantContext";
 
 function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
-    const { Search, setSearch, ShowSearch, setShowSearch, getCartCount, token, setToken } = useContext(ValiantContext);
+    const { Search, setSearch, ShowSearch, setShowSearch, getCartCount, token, setToken, wishlist } = useContext(ValiantContext);
     
     const handleLogout = () => {
         setToken("");
@@ -219,8 +219,15 @@ function Header() {
                             <FontAwesomeIcon icon={faMagnifyingGlass} className="h-5 w-5" />
                         </button>
 
+                        <NavLink to="/wishlist" className="relative text-gray-700 hover:text-gray-900 transition-colors ">
+                            <FontAwesomeIcon icon={faHeart} className=" h-6 w-6" />
+                            <span className="absolute -top-2 -right-2 bg-gray-900 text-white text-[10px] font-semibold rounded-full h-4 w-4 flex items-center justify-center">
+                                {wishlist ? wishlist.length : 0}
+                            </span>
+                        </NavLink>
+
                         <NavLink to="/cart" className="relative text-gray-700 hover:text-gray-900 transition-colors ">
-                            <FontAwesomeIcon icon={faShoppingCart} className=" h-7 w-7" />
+                            <FontAwesomeIcon icon={faShoppingCart} className=" h-6 w-6" />
                             <span className="absolute -top-2 -right-2 bg-gray-900 text-white text-[10px] font-semibold rounded-full h-4 w-4 flex items-center justify-center">
                                 {getCartCount()}
                             </span>
@@ -305,6 +312,14 @@ function Header() {
                             CONTACT
                         </NavLink>
                         <div className="pt-4 border-t border-gray-200 space-y-3">
+                            <NavLink
+                                to="/wishlist"
+                                className="flex items-center justify-center gap-3 py-3 text-sm tracking-wide text-gray-700 hover:text-gray-900 transition-colors "
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                <FontAwesomeIcon icon={faHeart} className="h-5 w-5" />
+                                WISHLIST ({wishlist ? wishlist.length : 0})
+                            </NavLink>
                             <NavLink
                                 to="/cart"
                                 className="flex items-center justify-center gap-3 py-3 text-sm tracking-wide text-gray-700 hover:text-gray-900 transition-colors "

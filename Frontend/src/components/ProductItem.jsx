@@ -23,7 +23,7 @@ import { ValiantContext } from '../context/ValiantContext'
 import { Link } from 'react-router-dom'
 
 function ProductItem({id,images,name,price}) {
-    const {currency} = useContext(ValiantContext);
+    const {currency, wishlist = [], addToWishlist, removeFromWishlist} = useContext(ValiantContext);
   return (
     <Link 
       className='group block' 
@@ -41,6 +41,33 @@ function ProductItem({id,images,name,price}) {
           
           {/* Overlay on Hover */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+          {/* Wishlist Button */}
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (wishlist.includes(id)) {
+                removeFromWishlist(id);
+              } else {
+                addToWishlist(id);
+              }
+            }}
+            className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 hover:bg-white text-gray-500 hover:text-red-500 shadow-sm transition-all duration-300 transform"
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 24 24" 
+              fill={wishlist.includes(id) ? "currentColor" : "none"}
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              className={`w-4 h-4 ${wishlist.includes(id) ? "text-red-500" : ""}`}
+            >
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </button>
           
           {/* Quick View Badge */}
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500">
