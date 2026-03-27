@@ -139,17 +139,17 @@ const listProducts = async (req, res) => {
     // 2) If no cache → hit DB
     console.log("🌐 Cache MISS for product list");
 
-    const product = await productModel.find({}).lean();
+    const products = await productModel.find({}).lean();
 
-    if (!product) return res.status(404).json({ success: false, message: "Product not found" });
+    if (!products) return res.status(404).json({ success: false, message: "Product not found" });
     
     // 3) Store in cache with TTL (e.g., 60 seconds)
-    await redisClient.set(cacheKey, JSON.stringify(product),  "EX", 60 );
+    await redisClient.set(cacheKey, JSON.stringify(products),  "EX", 60 );
 
     return res.status(200).json({
       success: true,
       message: "Products fetched successfully",
-      product,
+      products,
     });
   } catch (error) {
     console.error("Error fetching products:", error);
