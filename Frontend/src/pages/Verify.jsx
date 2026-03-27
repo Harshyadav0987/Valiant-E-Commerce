@@ -1,11 +1,10 @@
 import { useContext, useEffect } from "react"
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
-import { toast } from "react-toastify";
 import { ValiantContext } from "../context/ValiantContext";
 
 const Verify = () => {
-    const { navigate, token, setCartItems, backendUrl } = useContext(ValiantContext);
+    const { navigate, token, setCartItems, backendUrl, toast } = useContext(ValiantContext);
     const [searchParams, setSearchParams] = useSearchParams();
  
     const success = searchParams.get('success');

@@ -6,12 +6,11 @@ import CartTotal from '../components/CartTotal'
 import { assets } from '../assets/assets'
 import { ValiantContext } from '../context/ValiantContext';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 
 
 function PlaceOrder() {
     const [method,setMethod]= useState('cod');
-    const {navigate,backendUrl,token,cartItems,setCartItems,getCartAmount,deliveryFee,products} = useContext(ValiantContext)
+    const {navigate,backendUrl,token,cartItems,setCartItems,getCartAmount,deliveryFee,products,toast} = useContext(ValiantContext)
     const [formdata,setFormdata] = useState({
         firstName:'',
         lastName:'',
