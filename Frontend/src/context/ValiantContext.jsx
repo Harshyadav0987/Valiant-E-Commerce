@@ -1,10 +1,11 @@
 import { createContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { useToast, ToastContainer } from "../components/Toast.jsx";
 import { useNavigate } from "react-router-dom";
 export const ValiantContext = createContext();
 import axios from "axios";
 
 const ValiantContextProvider = (props) => {
+    const toast = useToast();
     
     const currency = import.meta.env.VITE_CURRENCY;
     const deliveryFee = 99;
@@ -267,11 +268,13 @@ const ValiantContextProvider = (props) => {
         productsLoaded,
         wishlist,
         addToWishlist,
-        removeFromWishlist
+        removeFromWishlist,
+        toast
     };
 
     return (
         <ValiantContext.Provider value={val}>
+            <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />
             {props.children}
         </ValiantContext.Provider>
     );

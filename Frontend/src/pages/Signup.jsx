@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 import { useContext } from 'react';
 import { ValiantContext } from '../context/ValiantContext';
 
@@ -9,7 +8,7 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
-  const {backendUrl,token,setToken, navigate} = useContext(ValiantContext);
+  const {backendUrl,token,setToken, navigate, toast} = useContext(ValiantContext);
 
   const [formData, setFormData] = useState({
     fullName: '',

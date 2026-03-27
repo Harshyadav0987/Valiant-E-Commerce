@@ -74,12 +74,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { ValiantContext } from '../context/ValiantContext'
 import sanitizeHtml from 'sanitize-html';
-import { toast } from 'react-toastify';
 import axios from 'axios';
 
 
 function SearchBar() {
-  const { setSearch, ShowSearch, setShowSearch, navigate,backendUrl } = useContext(ValiantContext);
+  const { setSearch, ShowSearch, setShowSearch, navigate,backendUrl, toast } = useContext(ValiantContext);
   const [query, setQuery] = useState('');
 
   useEffect(() => {
